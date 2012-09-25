@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://allectus/content/css/default.css" type="text/css"?>
+
+<window id="chooserproduct" minwidth="600" minheight="700" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" onload="main.init ();" persist="screenX screenY width height">
+	
+	<script type="application/javascript" src="chrome://allectus/content/js/sndk/js/sndk.js"/>  	
+	<script type="application/javascript" src="chrome://allectus/content/js/allectuslib.js"/>
+	
+	<script type="application/javascript" src="chrome://allectus/content/chooser/product.js"/>				
+	
+		<hbox class="WindowInnerPadding" flex="1">
+			<tree id="products" flex="1" hidecolumnpicker="true" disabled="true" onselect="main.controls.products.onChange ();" ondblclick="main.choose ();">
+				<treecols>
+					<treecol id="id" hidden="true"/>					
+					<treecol id="name" label="Navn" flex="1" onclick="SignonColumnSort('hostname');" persist="width" sortDirection="ascending"/>
+					<treecol id="price" label="Pris" flex="2" onclick="SignonColumnSort('hostname');" persist="width" sortDirection="ascending"/>					
+				</treecols>	
+				<treechildren id="productsTreeChildren">
+				</treechildren>
+			</tree>
+		</hbox>
+	
+
+	<hbox align="right"  class="WindowButtons">
+		<button id="close" label="Luk" oncommand="main.close ();" disabled="true"/>
+		<button id="choose" label="Vælg" oncommand="main.choose ();" disabled="true"/>
+	</hbox>
+</window>

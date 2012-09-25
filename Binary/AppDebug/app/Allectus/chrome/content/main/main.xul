@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://allectus/content/css/default.css" type="text/css"?>
+
+<window id="main" title="QNAX ApS" width="800" height="500" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" onload="main.init ();" persist="screenX screenY width height">
+			
+	<script type="application/javascript" src="chrome://allectus/content/js/sndk/js/sndk.js"/>  	
+	<script type="application/javascript" src="chrome://allectus/content/js/allectuslib.js"/>  	
+	
+	<script type="application/javascript" src="chrome://allectus/content/main/main.js"/>  	
+		
+	<keyset>
+  		<key id="shortcut-quit" modifiers="control" key="w" oncommand="app.shutdown (false);"/>
+	</keyset>
+	
+	<menubar id="menubar">
+		<menu label="File">
+			<menupopup>
+				<menuitem label="Close (Ctrl+W)" oncommand="app.shutdown (false);" />
+			</menupopup>
+		</menu>
+	</menubar>	
+		
+	<vbox class="WindowInnerPadding" flex="1">
+		<tabbox selectedIndex="0" flex="1">						
+			<tabs>
+				<tab image="chrome://allectus/content/icons/customers.png"/>
+			</tabs>
+						
+			<tabpanels flex="1">
+				<tabpanel>
+					<hbox flex="1">
+						<tree id="customers" flex="1" hidecolumnpicker="true" disabled="true" onselect="main.controls.customers.onChange ();" ondblclick="main.customers.edit ();">
+							<treecols>
+								<treecol id="id" hidden="true"/>
+								<treecol id="name" label="Navn" flex="1" onclick="SignonColumnSort('hostname');" persist="width" sortDirection="ascending"/>
+								<treecol id="address1" label="Adresse" flex="2" onclick="SignonColumnSort('hostname');" persist="width" sortDirection="ascending"/>
+								<treecol id="postcode" label="Post nr." width="90" onclick="SignonColumnSort('hostname');" persist="width" sortDirection="ascending"/>
+								<treecol id="city" label="By" flex="1" onclick="SignonColumnSort('hostname');" persist="width" sortDirection="ascending"/>
+								<treecol id="email" label="Email" flex="1" onclick="SignonColumnSort('hostname');" persist="width" sortDirection="ascending"/>
+							</treecols>
+							<treechildren id="customersTreeChildren">	
+							</treechildren>
+						</tree>
+					</hbox>
+					<hbox>
+						<vbox>
+							<button id="customerCreate" label="Opret" disabled="true" oncommand="main.customers.create ();"/>
+							<button id="customerEdit" label="Redigere" disabled="true" oncommand="main.customers.edit ();"/>
+							<button id="customerDestroy" label="Slet" disabled="true" oncommand="main.customers.destroy ();"/>	
+						</vbox>	
+					</hbox>	
+				</tabpanel>							
+			</tabpanels>
+		</tabbox>		    	
+	</vbox>
+</window>

@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://allectus/content/css/default.css" type="text/css"?>
+
+<window id="main" minwidth="800" minheight="500" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" onload="main.init ();" onclose="main.close ();" persist="screenX screenY">
+	
+	<script type="application/javascript" src="chrome://allectus/content/js/sndk/js/sndk.js"/>  	
+	<script type="application/javascript" src="chrome://allectus/content/js/allectuslib.js"/>
+		
+	<script type="application/javascript" src="chrome://allectus/content/subscriptionitemedit/subscriptionitemedit.js"/>	
+			
+	<keyset>
+  		<key id="shortcut-quit" modifiers="control" key="w" oncommand="main.close ();"/>
+	</keyset>			
+			
+	<hbox class="WindowInnerPadding" flex="1">
+		<tabbox selectedIndex="0" flex="1">		
+			<tabs>
+				<tab label="Detaljer"/>				
+			</tabs>
+						
+			<tabpanels flex="1">
+				<tabpanel>
+					<vbox flex="1">
+						<groupbox>
+							<caption label="Meta"/>
+							
+							<hbox>
+								<label class="Label">Id:</label>
+								<textbox id="id" flex="1" readonly="true"/>
+								<label class="Label">Oprettet:</label>
+								<datepicker id="createdate" type="normal" disabled="true"/>
+							</hbox>
+						</groupbox>
+						
+						<groupbox>
+							<caption label="Andet"/>
+							
+							<hbox align="center">
+								<label class="Label">Text:</label>
+								<textbox id="text" flex="1" onkeyup="main.onChange ();" />
+							</hbox>
+							<hbox align="center">
+								<label class="Label">Type:</label>
+								<menulist id="recurrencetype" oncommand="main.onChange ();" flex="1">
+  									<menupopup>
+  										<menuitem label="Engang" value="Once"/>
+    									<menuitem label="Måned" value="Monthly"/>    									
+  									</menupopup>
+								</menulist>
+							</hbox>
+							<hbox align="center">
+								<label class="Label">Pris:</label>
+								<textbox id="price" type="number" decimalplaces="2" hidespinbuttons="true" flex="1" onchange="main.onChange ();" />
+							</hbox>														
+						</groupbox>
+					</vbox>
+    			</tabpanel>    									
+			</tabpanels>
+		</tabbox>
+	</hbox>	
+	<hbox class="WindowButtons" align="right">
+		<button id="close" label="Luk" oncommand="main.close ();" disabled="true"/>
+		<button id="save" label="Gem" oncommand="main.save ();" disabled="true"/>
+	</hbox>
+</window>

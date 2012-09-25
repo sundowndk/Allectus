@@ -1,0 +1,17 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="AppDebug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="AllectusAddin/Application/xul/chrome/content/chooser/product.js">
+    <Files>
+      <File FileName="AllectusAddin/Application/xul/chrome/content/subscriptionedit/subscriptionedit.js" Line="334" Column="22" />
+      <File FileName="AllectusAddin/Application/xul/chrome/content/js/app.js" Line="75" Column="49" />
+      <File FileName="AllectusAddin/Application/xul/chrome/content/chooser/product.js" Line="73" Column="70" />
+      <File FileName="AllectusAddin/Application/xul/chrome/content/chooser/product.xul" Line="9" Column="2" />
+      <File FileName="AllectusAddin/Application/xul/chrome/content/customeredit/customeredit.js" Line="1" Column="58" />
+      <File FileName="AllectusAddin/Allectus.Addin/Ajax.cs" Line="176" Column="30" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

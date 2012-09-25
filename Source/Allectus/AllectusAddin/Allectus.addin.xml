@@ -1,0 +1,23 @@
+<Addin id          = "Allectus"              
+       author      = "QNAX ApS"
+       copyright   = "QNAX ApS"
+       url         = "http://www.qnax.net"
+       description = ""
+       version     = "1.0">
+	<Runtime>
+		<Import assembly="Allectus.dll"/>
+	</Runtime>
+	
+	<Dependencies>
+		<Addin id="Sorento" version="1.0"/>
+		<Addin id="sConsole" version="2.0"/>
+	</Dependencies>
+		
+	<Extension path = "/SorentoLib/Init">
+		<Type type="Allectus.Addin.Init"/>
+	</Extension>			
+										
+	<Extension path = "/SorentoLib/Resolver/Ajaxes">
+		<Type type="Allectus.Addin.Ajax"/>
+	</Extension>				
+</Addin>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{FC949A84-266A-4836-8274-8B1DCCDFA2DA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>AllectusLib</RootNamespace>
+    <AssemblyName>AllectusLib</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>False</Optimize>
+    <OutputPath>bin\Debug\cgi-bin\Addins\Allectus\</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'XUL|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>False</Optimize>
+    <OutputPath>bin\XUL</OutputPath>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AppDebug|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>False</Optimize>
+    <OutputPath>bin\AppDebug</OutputPath>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Test|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>False</Optimize>
+    <OutputPath>bin\Test</OutputPath>
+    <WarningLevel>4</WarningLevel>
+    <DebugSymbols>True</DebugSymbols>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="SNDK">
+      <HintPath>..\..\Lib\SNDK.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="SorentoLib">
+      <HintPath>..\..\Lib\SorentoLib.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="C5">
+      <HintPath>..\..\Lib\C5.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="AllectusLib\Customer.cs" />
+    <Compile Include="AllectusLib\Runtime.cs" />
+    <Compile Include="AllectusLib.Strings\Exception.cs" />
+    <Compile Include="AllectusLib\Subscription.cs" />
+    <Compile Include="AllectusLib\SubscriptionItem.cs" />
+    <Compile Include="AllectusLib.Enums\SubscriptionType.cs" />
+    <Compile Include="AllectusLib.Enums\SubscriptionStatus.cs" />
+    <Compile Include="AllectusLib.Enums\ItemRecurrenceType.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="AllectusLib\" />
+    <Folder Include="AllectusLib.Strings\" />
+    <Folder Include="AllectusLib.Enums\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="AllectusLib\Product.cs" />
+  </ItemGroup>
+</Project>

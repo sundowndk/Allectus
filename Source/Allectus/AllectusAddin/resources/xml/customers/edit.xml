@@ -1,0 +1,80 @@
+<sui elementheight="40px">
+	<layoutbox type="horizontal">			
+		<panel tag="content" size="*">
+			<tabview>
+				<tab label="Detaljer" selected="true">
+					<layoutbox type="horizontal" height="25%">			
+						<panel size="%elementheight%">
+							<layoutbox type="vertical">
+								<panel size="100px">
+									<label text="Navn"/>
+								</panel>					
+								<panel size="*">
+									<textbox tag="name" width="100%" />
+								</panel>					
+							</layoutbox>
+						</panel>						
+						<panel size="%elementheight%">
+							<layoutbox type="vertical">
+								<panel size="100px">
+									<label text="Adresse"/>
+								</panel>					
+								<panel size="*">
+									<textbox tag="address1" width="100%" />
+								</panel>					
+							</layoutbox>
+						</panel>	
+						<panel size="%elementheight%">
+							<layoutbox type="vertical">
+								<panel size="100px">
+								</panel>					
+								<panel size="*">
+									<textbox tag="address2" width="100%" />
+								</panel>					
+							</layoutbox>
+						</panel>												
+						<panel size="%elementheight%">
+							<layoutbox type="vertical">
+								<panel size="100px">
+									<label text="Post nr."/>
+								</panel>					
+								<panel size="100px">
+									<textbox tag="postcode" width="100%" />
+								</panel>					
+								<panel size="100px">
+									<label text="By"/>
+								</panel>					
+								<panel size="*">
+									<textbox tag="city" width="100%" />
+								</panel>					
+							</layoutbox>
+						</panel>	
+						<panel size="%elementheight%">
+							<layoutbox type="vertical">
+								<panel size="100px">
+									<label text="Land"/>
+								</panel>					
+								<panel size="*">
+									<textbox tag="country" width="100%" />
+								</panel>					
+							</layoutbox>
+						</panel>												
+					</layoutbox>					
+				</tab>
+			</tabview>		
+		</panel>
+	
+		<panel tag="buttons" size="%elementheight%">			
+			<layoutbox type="vertical">
+				<panel size="*"/>
+				<panel size="300px">
+					<button tag="close" width="50%" label="Luk" />
+					<button tag="save" width="50%" stylesheet="button green-gradient" label="Gem" disabled="true" />					
+				</panel>				
+			</layoutbox>
+		</panel>	
+	</layoutbox>
+</sui>
+
+
+

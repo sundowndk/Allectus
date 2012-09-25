@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+
+<window id="main" title="York Aucktion ApS" width="800" height="500" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  
+<vbox flex="1">
+	<tabbox id="myTabList" selectedIndex="0" flex="1">
+		<tabs>
+			<tab image="customers.png"/>
+			<tab image="auctions.png"/>			
+		</tabs>
+		<tabpanels flex="1">
+			<tabpanel>
+
+				<listbox id="customers" flex="1" sort="Navn" sortDirection="descending">
+			  		<listhead>
+						<listheader label="Navn"/>
+					</listhead>
+					<listcols>
+						<listcol flex="1" />
+					</listcols>
+				</listbox>
+	
+			</tabpanel>
+			<tabpanel>
+				<tree width="500">
+  <treecols>
+    <treecol label="Name" flex="1" sort="true"/>
+    <treecol label="Size" flex="1"/>
+  </treecols>
+  <treechildren>
+    <treeitem>
+      <treerow>
+        <treecell label="1"/>
+      </treerow>
+    </treeitem>
+    <treeitem>
+      <treerow>
+        <treecell label="Root Beer"/>
+      </treerow>
+    </treeitem>
+  </treechildren>
+</tree>
+
+	
+			</tabpanel>
+			
+		</tabpanels>
+	</tabbox>
+
+</vbox>
+
+
+
+
+
+
+
+</window>

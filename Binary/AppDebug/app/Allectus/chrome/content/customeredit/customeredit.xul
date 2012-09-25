@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://allectus/content/css/default.css" type="text/css"?>
+
+<window id="main" minwidth="800" minheight="500" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" onload="main.init ();" onclose="main.close ();" persist="screenX screenY">
+	
+	<script type="application/javascript" src="chrome://allectus/content/js/sndk/js/sndk.js"/>  	
+	<script type="application/javascript" src="chrome://allectus/content/js/allectuslib.js"/>
+		
+	<script type="application/javascript" src="chrome://allectus/content/customeredit/customeredit.js"/>	
+			
+	<keyset>
+  		<key id="shortcut-quit" modifiers="control" key="w" oncommand="main.close ();"/>
+	</keyset>			
+			
+	<hbox class="WindowInnerPadding" flex="1">
+		<tabbox selectedIndex="0" flex="1">		
+			<tabs>
+				<tab label="Detaljer"/>
+				<tab label="Aftaler"/>							
+			</tabs>
+						
+			<tabpanels flex="1">
+				<tabpanel>
+					<vbox flex="1">
+						<groupbox>
+							<caption label="Meta"/>
+							
+							<hbox align="center">
+								<label class="Label">Kunde nr.:</label>
+								<textbox id="erpid" flex="1" readonly="true"  />
+								<label class="Label">Oprettet:</label>								
+								<datepicker id="createdate" type="normal" disabled="true"/>
+							</hbox>
+						</groupbox>
+						
+						<groupbox>
+							<caption label="Adresse"/>
+							
+							<hbox align="center">
+								<label class="Label">Navn:</label>
+								<textbox id="name" flex="1" onkeyup="main.onChange ();" />
+							</hbox>
+							<hbox align="center">
+								<label class="Label">Adresse:</label>
+								<textbox id="address1" flex="1" onkeyup="main.onChange ();"/>
+							</hbox>
+							<hbox align="center">
+								<label class="Label"></label>
+								<textbox id="address2" flex="1" onkeyup="main.onChange ();"/>
+							</hbox>
+							<hbox align="center">
+								<label class="Label">Post nr.:</label>
+								<textbox id="postcode" width="60" />
+								<label class="Label">By:</label>
+								<textbox id="city" flex="1" onkeyup="main.onChange ();"/>
+							</hbox>
+							<hbox align="center">
+								<label class="Label">Land:</label>
+								<textbox id="country" flex="1" onkeyup="main.onChange ();"/>
+							</hbox>  					
+						</groupbox>												
+					</vbox>
+    			</tabpanel>
+    			
+				<tabpanel>
+					<hbox flex="1">
+						<tree id="subscriptions" flex="1" hidecolumnpicker="true" disabled="true" onselect="main.controls.subscriptions.onChange ();" ondblclick="main.subscriptions.edit ();">
+							<treecols>
+								<treecol id="id" hidden="true"/>								
+								<treecol id="title" label="Title" flex="2" onclick="SignonColumnSort('hostname');" persist="width" sortDirection="ascending"/>
+							</treecols>	
+							<treechildren id="subscriptionsTreeChildren">
+							</treechildren>
+						</tree>
+					</hbox>
+					<hbox>
+						<vbox>							
+							<button id="subscriptionCreate" label="Opret" oncommand="main.subscriptions.create ();" disabled="true" />
+							<button id="subscriptionEdit" label="Redigere" oncommand="main.subscriptions.edit ();" disabled="true" />
+							<button id="subscriptionDestroy" label="Slet" oncommand="main.subscriptions.destroy ();" disabled="true" />	
+						</vbox>	
+					</hbox>						
+				</tabpanel>				
+			
+			</tabpanels>
+		</tabbox>
+	</hbox>	
+	<hbox class="WindowButtons" align="right">
+		<button id="close" label="Luk" oncommand="main.close ();" disabled="true"/>
+		<button id="save" label="Gem" oncommand="main.save ();" disabled="true"/>
+	</hbox>
+</window>

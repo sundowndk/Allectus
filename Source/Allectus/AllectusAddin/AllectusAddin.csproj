@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{30612809-A2D1-4BE5-917B-9C4D5C34E803}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Allectus</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>False</Optimize>
+    <OutputPath>bin\Debug\cgi-bin\Addins\Allectus\</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="AfterBuild" command="build.sh ${TargetDir}" />
+      </CustomCommands>
+    </CustomCommands>
+    <AssemblyName>Allectus</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\Debug\cgi-bin\Addins\Allectus\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+    <AssemblyName>Allectus</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'XUL|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>False</Optimize>
+    <OutputPath>bin\XUL</OutputPath>
+    <WarningLevel>4</WarningLevel>
+    <AssemblyName>AllectusAddin</AssemblyName>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="AfterBuild" command="Application/build.sh ${TargetDir}" />
+      </CustomCommands>
+    </CustomCommands>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AppDebug|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>False</Optimize>
+    <OutputPath>bin\AppDebug</OutputPath>
+    <WarningLevel>4</WarningLevel>
+    <AssemblyName>AllectusAddin</AssemblyName>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="Execute" command="xulrunner app/Allectus/application -purgecaches -jsconsole" workingdir="${TargetDir}" />
+        <Command type="AfterBuild" command="Application/build.sh ${TargetDir}" />
+      </CustomCommands>
+    </CustomCommands>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="SNDK">
+      <HintPath>..\..\Lib\SNDK.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="SorentoLib">
+      <HintPath>..\..\Lib\SorentoLib.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="C5">
+      <HintPath>..\..\Lib\C5.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Allectus.Addin\Init.cs" />
+    <Compile Include="Allectus\Runtime.cs" />
+    <Compile Include="Allectus.Addin\Ajax.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <EmbeddedResource Include="Allectus.addin.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Allectus.Addin\" />
+    <Folder Include="Allectus\" />
+    <Folder Include="resources\" />
+    <Folder Include="resources\content\" />
+    <Folder Include="resources\css\" />
+    <Folder Include="resources\js\" />
+    <Folder Include="resources\htdocs\" />
+    <Folder Include="resources\includes\" />
+    <Folder Include="resources\xml\" />
+    <Folder Include="resources\content\includes\" />
+    <Folder Include="resources\xml\customers\" />
+    <Folder Include="Application\" />
+    <Folder Include="Application\xul\" />
+    <Folder Include="Application\xul\chrome\" />
+    <Folder Include="Application\xul\chrome\content\" />
+    <Folder Include="Application\xul\defaults\" />
+    <Folder Include="Application\xul\defaults\preferences\" />
+    <Folder Include="Application\xul\chrome\content\icons\" />
+    <Folder Include="Application\xul\chrome\content\js\" />
+    <Folder Include="Application\js\" />
+    <Folder Include="Application\js\app\" />
+    <Folder Include="Application\js\allectusLib\" />
+    <Folder Include="Application\xul\chrome\content\main\" />
+    <Folder Include="Application\xul\chrome\content\customeredit\" />
+    <Folder Include="Application\xul\chrome\content\subscriptionedit\" />
+    <Folder Include="Application\xul\chrome\content\subscriptionitemedit\" />
+    <Folder Include="Application\xul\chrome\content\css\" />
+    <Folder Include="Application\xul\chrome\content\chooser\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AllectusLib\AllectusLib.csproj">
+      <Project>{FC949A84-266A-4836-8274-8B1DCCDFA2DA}</Project>
+      <Name>AllectusLib</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="javascript.jsb" />
+    <None Include="build.sh" />
+    <None Include="resources\js\customer.js" />
+    <None Include="resources\content\index.stpl" />
+    <None Include="resources\content\includes\app_init.stpl" />
+    <None Include="resources\css\app.css" />
+    <None Include="resources\content\includes\app_customers.stpl" />
+    <None Include="resources\xml\customers\section.xml" />
+    <None Include="resources\xml\customers\edit.xml" />
+    <None Include="Application\xul\chrome\chrome.manifest" />
+    <None Include="Application\xul\chrome.manifest" />
+    <None Include="Application\xul\defaults\preferences\prefs.js" />
+    <None Include="Application\xul\application" />
+    <None Include="Application\build.sh" />
+    <None Include="Application\js\app\main.js" />
+    <None Include="Application\xul\chrome\content\icons\customers.png" />
+    <None Include="Application\allectusLib.jsb" />
+    <None Include="Application\js\allectusLib\customer.js" />
+    <None Include="Application\xul\chrome\content\main\main.xul" />
+    <None Include="Application\xul\chrome\content\main\main.js" />
+    <None Include="Application\xul\chrome\content\js\app.js" />
+    <None Include="Application\js\allectusLib\runtime.js" />
+    <None Include="Application\xul\chrome\content\customeredit\customeredit.js" />
+    <None Include="Application\xul\chrome\content\customeredit\customeredit.xul" />
+    <None Include="Application\js\allectusLib\subscription.js" />
+    <None Include="Application\xul\chrome\content\subscriptionedit\subscriptionedit.xul" />
+    <None Include="Application\xul\chrome\content\subscriptionedit\subscriptionedit.js" />
+    <None Include="Application\js\allectusLib\subscriptionitem.js" />
+    <None Include="Application\xul\chrome\content\subscriptionitemedit\subscriptionitemedit.js" />
+    <None Include="Application\xul\chrome\content\subscriptionitemedit\subscriptionitemedit.xul" />
+    <None Include="Application\xul\chrome\content\css\default.css" />
+    <None Include="Application\xul\chrome\content\chooser\product.js" />
+    <None Include="Application\xul\chrome\content\chooser\product.xul" />
+    <None Include="Application\js\allectusLib\product.js" />
+  </ItemGroup>
+</Project>

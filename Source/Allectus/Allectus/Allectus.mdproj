@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">XUL</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ItemType>GenericProject</ItemType>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D0D458FD-95F5-4652-B9E5-B17470B270A4}</ProjectGuid>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'XUL|AnyCPU' ">
+    <OutputPath>.</OutputPath>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="AfterBuild" command="xulrunner Allectus/application" />
+      </CustomCommands>
+    </CustomCommands>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AppDebug|AnyCPU' ">
+    <OutputPath>.</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Allectus\" />
+    <Folder Include="Allectus\chrome\" />
+    <Folder Include="Allectus\defaults\" />
+    <Folder Include="Allectus\chrome\content\" />
+    <Folder Include="Allectus\defaults\preferences\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Allectus\defaults\preferences\prefs.js" />
+    <None Include="Allectus\chrome.manifest" />
+    <None Include="Allectus\chrome\chrome.manifest" />
+    <None Include="Allectus\chrome\content\main.xul" />
+    <None Include="Allectus\application" />
+  </ItemGroup>
+</Project>
