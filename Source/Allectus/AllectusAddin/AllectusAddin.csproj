@@ -112,6 +112,9 @@
     <Folder Include="Application\xul\chrome\content\subscriptionitemedit\" />
     <Folder Include="Application\xul\chrome\content\css\" />
     <Folder Include="Application\xul\chrome\content\chooser\" />
+    <Folder Include="Application\js\allectusLib\management\" />
+    <Folder Include="Application\xul\chrome\content\management\" />
+    <Folder Include="Application\xul\chrome\content\management\location\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AllectusLib\AllectusLib.csproj">
@@ -155,5 +158,8 @@
     <None Include="Application\xul\chrome\content\chooser\product.js" />
     <None Include="Application\xul\chrome\content\chooser\product.xul" />
     <None Include="Application\js\allectusLib\product.js" />
+    <None Include="Application\js\allectusLib\management\location.js" />
+    <None Include="Application\xul\chrome\content\management\location\edit.js" />
+    <None Include="Application\xul\chrome\content\management\location\edit.xul" />
   </ItemGroup>
 </Project>

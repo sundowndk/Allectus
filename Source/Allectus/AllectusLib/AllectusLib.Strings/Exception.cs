@@ -30,26 +30,25 @@ namespace AllectusLib.Strings
 {
 	public class Exception
 	{
-		#region CUSTOMER
 		public static string CustomerSave = "00110|Could not save Customer with id: {0}";
 		public static string CustomerLoadGuid = "00120|Could not load Customer with id: {0}";
 		public static string CustomerDeleteGuid = "00130|Could not delete Customer with id: {0}";
-		public static string CustomerFromXmlDocument = "00140|Can not create Customer from XmlDocument, missing {0}";
-		#endregion
-		
-		#region SUBSCRIPTION
+		public static string CustomerFromXmlDocument = "00140|Can not create Customer from XmlDocument, missing {0}";	
+
 		public static string SubscriptionSave = "00210|Could not save Subscription with id: {0}";
 		public static string SubscriptionLoadGuid = "00220|Could not load Subscription with id: {0}";
 		public static string SubscriptionDeleteGuid = "00230|Could not delete Subscription with id: {0}";
 		public static string SubscriptionFromXmlDocument = "00240|Can not create Subscription from XmlDocument, missing {0}";
-		#endregion
-		
-		#region SUBSCRIPTIONITEM
+
 		public static string SubscriptionItemLoad = "00310|SubscriptionItem with id: {0} was not found.";
 		public static string SubscriptionItemSave = "00320|Could not save SubscriptionItem with id: {0}";
 		public static string SubscriptionItemDelete = "00330|Could not delete SubscriptionItem with id: {0}";
 		public static string SubscriptionItemFromXmlDocument = "00240|Can not create SubscriptionItem from XmlDocument, missing {0}";
-		#endregion
+
+		public static string ManagementLocationSave = "00410|Could not save Location with id: {0}";
+		public static string ManagementLocationLoadGuid = "00420|Could not load Location with id: {0}";
+		public static string ManagementLocationDeleteGuid = "00430|Could not delete Location with id: {0}";
+		public static string ManagementLocationFromXmlDocument = "00440|Can not create Location from XmlDocument, missing {0}";	
 		
 		#region PRODUCT
 		public static string ProductLoad = "SUBSCRIPTIONITEM with id: {0} was not found.";
@@ -68,7 +67,9 @@ namespace AllectusLib.Strings
 		public static string RangeSave = "Could not save RANGE with id: {0}";
 		public static string RangeDelete = "Could not delete RANGE with id: {0}";		
 #endregion
-		
+
+
+
 		#region RANGEGROUP
 		public static string RangeGroupLoad = "RANGEGROUP with id: {0} was not found.";
 		public static string RangeGroupSave = "Could not save RANGEGROUP with id: {0}";

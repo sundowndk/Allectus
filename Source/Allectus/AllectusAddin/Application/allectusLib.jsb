@@ -16,6 +16,11 @@
 			<class name="product">
 				<js file="/js/allectusLib/product.js" />				
 			</class>				
+			<class name="management">
+				<class name="location">
+					<js file="/js/allectusLib/management/location.js" />
+				</class>				
+			</class>
 		</class>
 	</project>	
 </solution>

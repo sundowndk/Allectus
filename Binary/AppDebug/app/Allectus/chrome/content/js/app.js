@@ -56,6 +56,11 @@ var app =
 		app.events.onSubscriptionItemLoad = new event ();
 		app.events.onSubscriptionItemSave = new event ();
 		app.events.onSubscriptionItemDestroy = new event ();
+		
+		app.events.onManagementLocationCreate = new event ();
+		app.events.onManagementLocationLoad = new event ();
+		app.events.onManagementLocationSave = new event ();
+		app.events.onManagementLocationDestroy = new event ();
 	},
 	
 	shutdown : function (ForceQuit)

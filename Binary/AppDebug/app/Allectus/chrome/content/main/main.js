@@ -7,6 +7,7 @@ var main =
 		app.startup (window);
 		
 		main.customers.init ();
+		//main.locations.init ();
 						
 		app.events.onCustomerCreate.addHandler (main.eventHandlers.onCustomerCreate);
 		app.events.onCustomerSave.addHandler (main.eventHandlers.onCustomerSave);
@@ -201,14 +202,176 @@ var main =
 					document.getElementById ("customerDestroy").disabled = true;
 				}
 			}
-		}
+		},
+		
+		locations :
+		{
+			addRow : function (item)
+			{			
+				var children = document.getElementById ('locationsTreeChildren');		
+	
+				var item = document.createElement('treeitem');	
+				children.appendChild (item)
+
+				var row = document.createElement('treerow');
+				item.appendChild (row);
+
+				var columns = [item["id"], item["title"]];
+									
+				for (index in columns)
+				{
+					var cell = document.createElement('treecell');
+					cell.setAttribute ('label', columns[index]);
+					row.appendChild(cell);																		
+				}
+			},
+			
+			removeRow : function (id)
+			{
+				var tree = document.getElementById ('locations');
+				var index = -1;
+				
+				if (!id)
+				{
+					index = tree.currentIndex;									
+  				}
+  				else
+  				{  									
+					for (var i = 0; i < tree.view.rowCount; i++) 
+					{
+						if (tree.view.getCellText (i, tree.columns.getNamedColumn ('id')) == id)
+						{					
+							index = i;				
+							break;
+						}
+					}
+  				}
+  				
+  				if (index != -1)
+  				{
+  					tree.view.getItemAtIndex (index).parentNode.removeChild (tree.view.getItemAtIndex (index));
+  				}
+			},
+			
+			setRow : function (item)
+			{
+				var tree = document.getElementById ('locations');
+				var index = -1;
+				
+				if (!item)
+				{
+					index = tree.currentIndex;
+				}
+				else
+				{
+					for (var i = 0; i < tree.view.rowCount; i++) 
+					{	
+						if (tree.view.getCellText (i, tree.columns.getNamedColumn ('id')) == item.id)
+						{					
+							index = i;							
+							break;
+						}
+					}
+				}
+				
+				if (index != -1)
+				{									
+					tree.view.setCellText (index, tree.columns.getNamedColumn ('id'), item.id);
+					tree.view.setCellText (index, tree.columns.getNamedColumn ('title'), item.title);					
+				}
+			},
+			
+			getRow : function (id)
+			{
+				var result = new Array ();
+				
+				var tree = document.getElementById ('locations');
+				var index = -1;				
+				
+				if (!id)
+				{
+					index = tree.currentIndex;				
+				}
+				else
+				{
+					for (var i = 0; i < tree.view.rowCount; i++) 
+					{
+						if (tree.view.getCellText (i, tree.columns.getNamedColumn ('id')) == id)
+						{					
+							index = i;
+							break;
+						}
+					}	
+				}
+				
+				if (index != -1)
+				{									
+					result.id = tree.view.getCellText (index, tree.columns.getNamedColumn ('id'));
+					result.title = tree.view.getCellText (index, tree.columns.getNamedColumn ('title'));					
+				}
+				
+				return result;
+			},
+			
+			refresh : function ()
+			{					
+				var onDone = 	function (items)
+								{
+									for (index in items)
+									{									
+										main.controls.locations.addRow (items[index]);
+									}
+								
+								// Enable controls
+								document.getElementById ("locations").disabled = false;								
+								document.getElementById ("locationCreate").disabled = false;								
+								
+								main.controls.locations.onChange ();
+							};
+
+				// Disable controls
+				document.getElementById ("locations").disabled = true;
+				document.getElementById ("locationCreate").disabled = true;
+				document.getElementById ("locationEdit").disabled = true;
+				document.getElementById ("locationDestroy").disabled = true;
+			
+				allectusLib.management.location.list ({async: true, onDone: onDone});					
+			},
+				
+			clear : function ()
+			{
+				var treechildren = document.getElementById ('locatonsTreeChildren');
+								
+				while (treechildren.firstChild) 
+				{
+ 						treechildren.removeChild (treechildren.firstChild);
+				}
+			},						
+
+			onChange : function ()
+			{
+				var view = document.getElementById ("locations").view;
+				var selection = view.selection.currentIndex; //returns -1 if the tree is not focused
+				
+				if (selection != -1)
+				{
+					document.getElementById ("locationEdit").disabled = false;
+					document.getElementById ("locationDestroy").disabled = false;
+				}
+				else
+				{
+					document.getElementById ("locationEdit").disabled = true;
+					document.getElementById ("locationDestroy").disabled = true;
+				}
+			}
+		}		
 	},
 	
 	customers :
 	{
 		init : function ()
 		{
-			main.controls.customers.refresh ();		
+			main.controls.locations.refresh ();		
 		},
 								
 		create : function ()
@@ -251,5 +414,54 @@ var main =
 				}								
 			}
 		}
-	}		
+	},
+	
+	locations :
+	{
+		init : function ()
+		{
+			main.controls.locations.refresh ();		
+		},
+								
+		create : function ()
+		{		
+			try
+			{
+				var current = allectusLib.management.location.create ();			
+				current.title = "Unavngiven lokation";
+				allectusLib.management.location.save (current);																								
+				
+				window.openDialog ("chrome://allectus/content/management/location/edit.xul", current.id, "chrome", {locationId: current.id});
+			}
+			catch (error)
+			{
+				app.error ({exception: error})
+			}
+		},
+		
+		edit : function ()
+		{		
+			var current = main.controls.locations.getRow ();
+							
+			window.openDialog ("chrome://allectus/content/managment/location/edit.xul", current.id, "chrome", {locationId: current.id});
+		},
+		
+		destroy : function ()
+		{
+			var prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService); 
+			var result = prompts.confirm (null, "Slet lokation", "Er du sikker på du vil slette denne lokation ?");
+			
+			if (result)
+			{
+				try
+				{
+					allectusLib.management.location.destroy (main.controls.locations.getRow ().id);					
+				}
+				catch (error)
+				{
+					app.error ({exception: error})
+				}								
+			}
+		}
+	}	
 }

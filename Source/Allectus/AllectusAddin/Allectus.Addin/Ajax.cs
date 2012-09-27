@@ -18,6 +18,7 @@ namespace Allectus.Addin
 		public Ajax ()
 		{
 			base.NameSpaces.Add ("allectuslib");
+			base.NameSpaces.Add ("allectuslib.management");
 		}
 		#endregion
 		
@@ -160,6 +161,44 @@ namespace Allectus.Addin
 				}
 				#endregion			
 
+				#region Allectus.Management.Location
+				case "allectuslib.management.location":
+				{	switch (Method.ToLower ())
+					{						
+						case "create":
+						{
+							result.Add (new AllectusLib.Management.Location ());
+							break;
+						}		
+							
+						case "load":
+						{
+							result.Add (AllectusLib.Management.Location.Load (request.getValue<Guid>("id")));
+							break;
+						}
+							
+						case "save":
+						{
+							request.getValue<AllectusLib.Management.Location> ("allectuslib.management.location").Save ();
+							break;
+						}
+							
+						case "destroy":
+						{
+							AllectusLib.Management.Location.Delete (request.getValue<Guid> ("id"));
+							break;
+						}
+							
+						case "list":
+						{
+							result.Add (AllectusLib.Management.Location.List ());
+							break;
+						}
+					}
+					break;
+				}
+				#endregion	
+
 				#region Allectus.Product
 				case "allectuslib.product":
 				{	
@@ -179,7 +218,7 @@ namespace Allectus.Addin
 					}
 					break;
 				}
-					#endregion	
+				#endregion	
 			}
 			
 			return result;

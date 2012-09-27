@@ -35,7 +35,8 @@ namespace Test
 		{
 			C5.Runtime.DBConnection = new Connection (SNDK.Enums.DatabaseConnector.Mssql, "172.20.0.54", "testdb", "testdb", "testdb", false);	
 
-			AllectusLib.Runtime.DBConnection = new SNDK.DBI.Connection (SNDK.Enums.DatabaseConnector.Mysql, "10.0.0.40", "allectus", "allectus", "qwerty", false);
+			//AllectusLib.Runtime.DBConnection = new SNDK.DBI.Connection (SNDK.Enums.DatabaseConnector.Mysql, "10.0.0.40", "allectus", "allectus", "qwerty", false);
+			AllectusLib.Runtime.DBConnection = new SNDK.DBI.Connection (SNDK.Enums.DatabaseConnector.Mysql, "172.20.0.56", "allectus", "allectus", "allectus", false);
 
 			if (!AllectusLib.Runtime.DBConnection.Connect ())
 			{
@@ -47,9 +48,23 @@ namespace Test
 				Console.WriteLine ("Could not connect C5 to database!");
 			}
 
-			bool testsubscription = true;
+			bool testlocation = true;
+
+			bool testsubscription = false;
 
 			bool testcustomer = false;
+
+			if (testlocation)
+			{
+				AllectusLib.Management.Location l1 = new AllectusLib.Management.Location ();
+				l1.Title = "Test";
+				l1.Save ();
+
+				AllectusLib.Management.Location l2 = AllectusLib.Management.Location.Load (l1.Id);
+				Console.WriteLine (l2.Title);
+
+				AllectusLib.Management.Location.Delete (l1.Id);
+			}
 
 			if (testsubscription)
 			{

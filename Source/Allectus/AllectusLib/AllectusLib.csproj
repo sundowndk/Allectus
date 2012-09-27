@@ -73,12 +73,14 @@
     <Compile Include="AllectusLib.Enums\SubscriptionType.cs" />
     <Compile Include="AllectusLib.Enums\SubscriptionStatus.cs" />
     <Compile Include="AllectusLib.Enums\ItemRecurrenceType.cs" />
+    <Compile Include="AllectusLib.Management\Location.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="AllectusLib\" />
     <Folder Include="AllectusLib.Strings\" />
     <Folder Include="AllectusLib.Enums\" />
+    <Folder Include="AllectusLib.Management\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="AllectusLib\Product.cs" />
