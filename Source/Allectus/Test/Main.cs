@@ -48,9 +48,9 @@ namespace Test
 				Console.WriteLine ("Could not connect C5 to database!");
 			}
 
-			bool testlocation = true;
+			bool testlocation = false;
 
-			bool testsubscription = false;
+			bool testsubscription = true;
 
 			bool testcustomer = false;
 
@@ -68,38 +68,45 @@ namespace Test
 
 			if (testsubscription)
 			{
-				Customer d1 = new Customer ();
-				d1.Name = "Test Customer";
-				d1.Save ();
 
-				Subscription t1 = new Subscription (d1);
-				t1.Type = AllectusLib.Enums.SubscriptionType.Yearly;
-				t1.Title = "Test Subscription #1";
-				t1.Save ();
 
-				SubscriptionItem t2 = new SubscriptionItem (t1);
-				t2.Text = "Test Item #1";
-				t2.Price = 100m;
-				t2.Save ();
+				Subscription s1 = Subscription.Load (new Guid ("935b3282-25cc-48a9-a249-3596a684fd20"));
 
-				SubscriptionItem t3 = new SubscriptionItem (t1);
-				t3.Text = "Test Item #2";
-				t3.Price = 200m;
-				t3.Save ();
+				Console.WriteLine (s1.Title);
+				s1.Bill ();
 
-				t1.Bill ();
+//				Customer d1 = new Customer ();
+//				d1.Name = "Test Customer";
+//				d1.Save ();
+//
+//				Subscription t1 = new Subscription (d1);
+//				t1.Type = AllectusLib.Enums.SubscriptionType.Yearly;
+//				t1.Title = "Test Subscription #1";
+//				t1.Save ();
+//
+//				SubscriptionItem t2 = new SubscriptionItem (t1);
+//				t2.Text = "Test Item #1";
+//				t2.Price = 100m;
+//				t2.Save ();
+//
+//				SubscriptionItem t3 = new SubscriptionItem (t1);
+//				t3.Text = "Test Item #2";
+//				t3.Price = 200m;
+//				t3.Save ();
+//
+//				t1.Bill ();
 
 //				foreach (SubscriptionItem t in SubscriptionItem.List (t1))
 //				{
 //					Console.WriteLine (t.Text);
 //				}
 
-				SubscriptionItem.Delete (t2);
-				SubscriptionItem.Delete (t3);
-
-				Subscription.Delete (t1);
-
-				Customer.Delete (d1);
+//				SubscriptionItem.Delete (t2);
+//				SubscriptionItem.Delete (t3);
+//
+//				Subscription.Delete (t1);
+//
+//				Customer.Delete (d1);
 			}
 
 

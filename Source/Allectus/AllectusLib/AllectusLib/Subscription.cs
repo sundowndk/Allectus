@@ -333,7 +333,10 @@ namespace AllectusLib
 			result.Add ("type", this._type);
 			result.Add ("customerid", this._customerid);
 			result.Add ("title", this._title);		
-			result.Add ("nextbilling", this._nextbilling);
+
+//			DateTime dt = new DateTime (2008, 3, 9, 0, 0, 0, 0);
+
+			result.Add ("nextbilling", String.Format("{0:yyyy/MM/dd}", SNDK.Date.TimestampToDateTime (this._nextbilling)));
 			result.Add ("status", this._status);
 			
 			return SNDK.Convert.ToXmlDocument (result, this.GetType ().FullName.ToLower ());
@@ -430,10 +433,21 @@ namespace AllectusLib
 			
 			
 			Console.WriteLine ("Period: "+ begin +" > "+ end +" = "+ days +" days, out of "+ test +" - Billing percent: "+ test2 +"% - Next billing: "+ next);
-			
+
+
+
 			foreach (SubscriptionItem item in SubscriptionItem.List (this))
 			{
-				Console.WriteLine (item.Text +" "+  Math.Round  ((item.Price * months), 2, MidpointRounding.ToEven));
+
+
+				if (item.RecurrenceType == AllectusLib.Enums.ItemRecurrenceType.Once)
+				{
+					Console.WriteLine (item.Text +" "+  Math.Round  ((item.Price), 2, MidpointRounding.ToEven));
+				}
+				else
+				{
+					Console.WriteLine (item.Text +" "+  Math.Round  ((item.Price * months), 2, MidpointRounding.ToEven));
+				}
 			}
 			
 			//			int price = (895 * multiplier);
@@ -735,8 +749,8 @@ namespace AllectusLib
 			}
 			
 			if (item.ContainsKey ("nextbilling"))
-			{
-				result._nextbilling = int.Parse ((string)item["nextbilling"]);
+			{			
+				result._nextbilling = SNDK.Date.DateTimeToTimestamp (DateTime.ParseExact ((string)item["nextbilling"], "yyyy/MM/dd", null));
 			}
 			
 			if (item.ContainsKey ("status"))

@@ -229,6 +229,14 @@ var main =
 		document.getElementById ("postcode").value = main.current.postcode;
 		document.getElementById ("city").value = main.current.city;
 		document.getElementById ("country").value = main.current.country;
+		
+		document.getElementById ("attention").value = main.current.attention;
+		document.getElementById ("phone").value = main.current.phone;
+		document.getElementById ("email").value = main.current.email;
+		
+		document.getElementById ("vatno").value = main.current.vatno;
+		
+		document.getElementById ("invoiceemail").value = main.current.invoiceemail;
 								
 		main.subscriptions.init ();								
 								
@@ -243,6 +251,14 @@ var main =
 		main.current.postcode = document.getElementById ("postcode").value;
 		main.current.city = document.getElementById ("city").value;
 		main.current.country = document.getElementById ("country").value;								
+		
+		main.current.attention = document.getElementById ("attention").value;								
+		main.current.phone = document.getElementById ("phone").value;								
+		main.current.email = document.getElementById ("email").value;								
+		
+		main.current.vatno = document.getElementById ("vatno").value;								
+		
+		main.current.invoiceemail = document.getElementById ("invoiceemail").value;								
 	},
 	
 	save : function ()

@@ -228,6 +228,7 @@ namespace AllectusLib.Management
 			QueryBuilder qb = new QueryBuilder (QueryBuilderType.Select);
 			qb.Table (DatabaseTableName);
 			qb.Columns ("id");
+			qb.OrderBy ("createtimestamp", QueryBuilderOrder.Accending);
 			
 			Query query = Runtime.DBConnection.Query (qb.QueryString);
 			if (query.Success)

@@ -1,19 +1,16 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="AppDebug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="AllectusAddin/Application/xul/chrome/content/main/main.js">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="AllectusLib/AllectusLib/Customer.cs">
     <Files>
-      <File FileName="AllectusAddin/Application/xul/chrome/content/management/location/edit.js" Line="208" Column="56" />
-      <File FileName="AllectusAddin/Application/xul/chrome/content/management/location/edit.xul" Line="20" Column="8" />
-      <File FileName="AllectusAddin/Application/xul/chrome/content/main/main.xul" Line="59" Column="151" />
-      <File FileName="AllectusAddin/Application/xul/chrome/content/main/main.js" Line="487" Column="53" />
-      <File FileName="AllectusAddin/Application/js/allectusLib/management/location.js" Line="58" Column="1" />
-      <File FileName="AllectusLib/AllectusLib.Management/Location.cs" Line="239" Column="63" />
-      <File FileName="AllectusAddin/Allectus.Addin/Ajax.cs" Line="68" Column="12" />
-      <File FileName="AllectusLib/AllectusLib/Customer.cs" Line="252" Column="4" />
-      <File FileName="AllectusLib/AllectusLib.Strings/Exception.cs" Line="51" Column="90" />
-      <File FileName="AllectusAddin/Application/xul/chrome/content/customeredit/customeredit.js" Line="358" Column="2" />
-      <File FileName="AllectusAddin/Application/xul/chrome/content/customeredit/customeredit.xul" Line="56" Column="64" />
-      <File FileName="AllectusAddin/Allectus/Runtime.cs" Line="32" Column="31" />
+      <File FileName="AllectusAddin/Application/xul/chrome/content/subscriptionedit/subscriptionedit.js" Line="223" Column="7" />
+      <File FileName="AllectusAddin/Application/xul/chrome/content/subscriptionitemedit/subscriptionitemedit.xul" Line="1" Column="1" />
+      <File FileName="AllectusAddin/Allectus/Runtime.cs" Line="42" Column="80" />
+      <File FileName="AllectusLib/AllectusLib/Customer.cs" Line="535" Column="61" />
+      <File FileName="AllectusLib/AllectusLib/Subscription.cs" Line="416" Column="23" />
+      <File FileName="Test/Main.cs" Line="55" Column="30" />
+      <File FileName="AllectusAddin/Allectus.Addin/Init.cs" Line="1" Column="1" />
+      <File FileName="AllectusAddin/Application/xul/chrome/content/customeredit/customeredit.xul" Line="73" Column="28" />
+      <File FileName="AllectusAddin/Application/xul/chrome/content/customeredit/customeredit.js" Line="237" Column="57" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

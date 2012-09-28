@@ -176,7 +176,7 @@ var main =
 				
 				result.id = tree.view.getCellText (tree.currentIndex, tree.columns.getNamedColumn('id'));
 				result.name = tree.view.getCellText (tree.currentIndex, tree.columns.getNamedColumn('name'));
-				result.price = tree.view.getCellText (tree.currentIndex, tree.columns.getNamedColumn('proce'));
+				result.price = tree.view.getCellText (tree.currentIndex, tree.columns.getNamedColumn('price'));
 								
 				return result;
 			},

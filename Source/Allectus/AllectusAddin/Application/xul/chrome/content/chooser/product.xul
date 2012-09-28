@@ -19,8 +19,7 @@
 				<treechildren id="productsTreeChildren">
 				</treechildren>
 			</tree>
-		</hbox>
-	
+		</hbox>	
 
 	<hbox align="right"  class="WindowButtons">
 		<button id="close" label="Luk" oncommand="main.close ();" disabled="true"/>

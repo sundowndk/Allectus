@@ -224,7 +224,7 @@ var main =
 		document.getElementById ("type").value = main.current.type;
 	
 		document.getElementById ("title").value = main.current.title;	
-		document.getElementById ("nextbilling").dateValue = SNDK.tools.timestampToDate (main.current.nextbilling);
+		document.getElementById ("nextbilling").dateValue = new Date (Date.parse (main.current.nextbilling));
 				
 		document.getElementById ("status").value = main.current.status;	
 								
@@ -238,13 +238,8 @@ var main =
 		main.current.title = document.getElementById ("title").value;
 		
 		main.current.type = document.getElementById ("type").value;
-		
-		var date = document.getElementById ("nextbilling").dateValue
-		date.setHours (0);
-		date.setMinutes (0);
-		date.setSeconds (0);		
-		main.current.nextbilling = SNDK.tools.dateToTimestamp (date);
-						
+				
+		main.current.nextbilling = SNDK.tools.dateToYMD (document.getElementById ("nextbilling").dateValue);		
 		main.current.status = document.getElementById ("status").value;		
 	},
 	
@@ -324,9 +319,16 @@ var main =
 							{
 								if (result)
 								{
-									//var product = didius.product.create (main.current, result);
-									//didius.case.save (case_);																								
-																									
+									dump (result.id)
+									
+									// Create new item.
+									var current = allectusLib.subscriptionItem.create (main.current);
+									current.text = result.name;
+									current.price = result.price;
+									allectusLib.subscriptionItem.save (current);
+									
+									window.openDialog ("chrome://allectus/content/subscriptionitemedit/subscriptionitemedit.xul", current.id, "chrome", {subscriptionItemId: current.id});
+									
 									//window.openDialog ("chrome://didius/content/caseedit/caseedit.xul", case_.id, "chrome", {caseId: case_.id});
 								}
 							};

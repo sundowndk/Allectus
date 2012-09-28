@@ -59,7 +59,42 @@
 								<label class="Label">Land:</label>
 								<textbox id="country" flex="1" onkeyup="main.onChange ();"/>
 							</hbox>  					
-						</groupbox>												
+						</groupbox>	
+						
+						<groupbox>
+							<caption label="Kontakt"/>
+							
+							<hbox align="center">
+								<label class="Label">Att.:</label>
+								<textbox id="attention" flex="1" onkeyup="main.onChange ();" />
+							</hbox>
+							<hbox align="center">
+								<label class="Label">Telefon:</label>
+								<textbox id="phone" flex="1" onkeyup="main.onChange ();" />
+							</hbox>
+							<hbox align="center">
+								<label class="Label">Email:</label>
+								<textbox id="email" flex="1" onkeyup="main.onChange ();"/>
+							</hbox>							
+						</groupbox>	
+						
+						<groupbox>
+							<caption label="Andet"/>
+							
+							<hbox align="center">
+								<label class="Label">Moms nr.:</label>
+								<textbox id="vatno" flex="1" onkeyup="main.onChange ();" />
+							</hbox>							
+						</groupbox>	
+						
+						<groupbox>
+							<caption label="Fakturering"/>
+							
+							<hbox align="center">
+								<label class="Label">Email:</label>
+								<textbox id="invoiceemail" flex="1" onkeyup="main.onChange ();" />
+							</hbox>							
+						</groupbox>																																							
 					</vbox>
     			</tabpanel>
     			

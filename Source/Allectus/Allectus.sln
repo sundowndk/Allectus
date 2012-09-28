@@ -49,6 +49,8 @@ Global
 		{FC949A84-266A-4836-8274-8B1DCCDFA2DA}.XUL|Any CPU.ActiveCfg = XUL|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = AllectusAddin\AllectusAddin.csproj
+		StartupItems = $0
+		$0.Item = Test\Test.csproj
+		$0.Item = AllectusAddin\AllectusAddin.csproj
 	EndGlobalSection
 EndGlobal

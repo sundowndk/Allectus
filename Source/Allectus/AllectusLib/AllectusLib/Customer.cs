@@ -163,6 +163,98 @@ namespace AllectusLib
 				this._c5debitor.Country = value;
 			}
 		}
+
+		public string Attention
+		{
+			get
+			{
+				return this._c5debitor.Attention;
+			}
+
+			set
+			{
+				this._c5debitor.Attention = value;
+			}
+		}
+
+		public string Phone
+		{
+			get
+			{
+				return this._c5debitor.Phone;
+			}
+
+			set
+			{
+				this._c5debitor.Phone = value;
+			}
+		}
+
+		public string Email
+		{
+			get
+			{
+				return this._c5debitor.Email;
+			}
+
+			set
+			{
+				this._c5debitor.Email = value;
+			}
+		}
+
+		public string InvoiceEmail
+		{
+			get
+			{
+				return this._c5debitor.Url;
+			}
+
+			set
+			{
+				this._c5debitor.Url = value;
+			}
+		}
+
+		public string CreditPolicy
+		{
+			get
+			{
+				return this._c5debitor.CreditPolicy;
+			}
+
+			set
+			{
+				this._c5debitor.CreditPolicy = value;
+			}
+		}
+
+		public string VatNo
+		{
+			get
+			{
+				return this._c5debitor.VatNo;
+			}
+
+			set
+			{
+				this._c5debitor.VatNo = value;
+			}
+		}
+
+		public string VatCode
+		{
+			get
+			{
+				return this._c5debitor.VatCode;
+			}
+
+			set
+			{
+				this._c5debitor.VatCode = value;
+			}
+		}
+
 		#endregion
 		
 		#region Constructor
@@ -173,7 +265,17 @@ namespace AllectusLib
 			this._updatetimestamp = SNDK.Date.CurrentDateTimeToTimestamp ();
 			this._erpid = string.Empty;
 
-			this._c5debitor = new Debitor ();
+			this._c5debitor = new C5.Debitor ();
+		}
+
+		public Customer (C5.Debitor Debitor)
+		{
+			this._id = Guid.NewGuid ();
+			this._createtimestamp = SNDK.Date.CurrentDateTimeToTimestamp ();
+			this._updatetimestamp = SNDK.Date.CurrentDateTimeToTimestamp ();
+			this._erpid = string.Empty;
+			
+			this._c5debitor = Debitor;
 		}
 		#endregion
 		
@@ -247,6 +349,13 @@ namespace AllectusLib
 			result.Add ("postcode", this._c5debitor.PostCode);
 			result.Add ("city", this._c5debitor.City);
 			result.Add ("country", this._c5debitor.Country);
+			result.Add ("attention", this._c5debitor.Attention);
+			result.Add ("phone", this._c5debitor.Phone);
+			result.Add ("email", this._c5debitor.Email);
+			result.Add ("invoiceemail", this._c5debitor.Url);
+			result.Add ("creditpolicy", this._c5debitor.CreditPolicy);
+			result.Add ("vatno", this._c5debitor.VatNo);
+			result.Add ("vatcode", this._c5debitor.VatCode);
 			
 			return SNDK.Convert.ToXmlDocument (result, this.GetType ().FullName.ToLower ());
 		}
@@ -416,13 +525,46 @@ namespace AllectusLib
 				result._c5debitor.City = (string)item["city"];
 			}
 
-
 			if (item.ContainsKey ("country"))
 			{
 				result._c5debitor.Country = (string)item["country"];
 			}
 
-			
+			if (item.ContainsKey ("attention"))
+			{
+				result._c5debitor.Attention = (string)item["attention"];
+			}
+
+			if (item.ContainsKey ("phone"))
+			{
+				result._c5debitor.Phone = (string)item["phone"];
+			}
+
+			if (item.ContainsKey ("email"))
+			{
+				result._c5debitor.Email = (string)item["email"];
+			}
+
+			if (item.ContainsKey ("invoiceemail"))
+			{
+				result._c5debitor.Url = (string)item["invoiceemail"];
+			}
+
+			if (item.ContainsKey ("creditpolicy"))
+			{
+				result._c5debitor.CreditPolicy = (string)item["creditpolicy"];
+			}
+
+			if (item.ContainsKey ("vatno"))
+			{
+				result._c5debitor.VatNo = (string)item["vatno"];
+			}
+
+			if (item.ContainsKey ("vatcode"))
+			{
+				result._c5debitor.VatCode = (string)item["vatcode"];
+			}
+
 			return result;
 		}
 		#endregion
