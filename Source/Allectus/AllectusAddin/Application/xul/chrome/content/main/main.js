@@ -1,5 +1,8 @@
 Components.utils.import("resource://allectus/js/app.js");
 
+ 
+
+
 var main = 
 {
 	init : function ()
@@ -7,7 +10,9 @@ var main =
 		app.startup (window);
 		
 		main.customers.init ();
-		//main.locations.init ();
+		main.locations.init ();
+		
+		
 						
 		app.events.onCustomerCreate.addHandler (main.eventHandlers.onCustomerCreate);
 		app.events.onCustomerSave.addHandler (main.eventHandlers.onCustomerSave);
@@ -206,7 +211,7 @@ var main =
 		
 		locations :
 		{
-			addRow : function (item)
+			addRow : function (data)
 			{			
 				var children = document.getElementById ('locationsTreeChildren');		
 	
@@ -216,7 +221,7 @@ var main =
 				var row = document.createElement('treerow');
 				item.appendChild (row);
 
-				var columns = [item["id"], item["title"]];
+				var columns = [data["id"], data["title"]];
 									
 				for (index in columns)
 				{
@@ -314,7 +319,7 @@ var main =
 			},
 			
 			refresh : function ()
-			{					
+			{									
 				var onDone = 	function (items)
 								{
 									for (index in items)
@@ -371,7 +376,7 @@ var main =
 	{
 		init : function ()
 		{
-			main.controls.locations.refresh ();		
+			main.controls.customers.refresh ();		
 		},
 								
 		create : function ()
@@ -416,11 +421,144 @@ var main =
 		}
 	},
 	
+	test : function (attributes)
+	{	
+		_attributes = attributes;				
+		_elements = Array ();
+		
+		this.addRow = addRow;
+		
+		init (attributes);
+	
+		function init (attributes)
+		{
+			if (!attributes)
+				attributes = new Array ();
+				
+			if (!attributes.element)
+				throw "Need an treeview element to attatch to.";
+		
+			_elements.tree = attributes.element;
+			_elements.treeChildren = document.createElement ("treechildren");
+			_elements.tree.appendChild (_elements.treeChildren);
+		};
+		
+		function addRow (attributes)
+		{
+			if (!attributes)
+				attributes = new Array ();
+				
+			if (!attributes.id)
+				attributes.id = SNDK.tools.newGuid ();
+				
+			if (!attributes.columns)
+				attributes.columns = new Array ();
+				
+			if (!attributes.isContainer)
+				attributes.isContainer = false;						
+				
+			if (!attributes.isOpen)
+				attributes.isOpen = false;
+		
+			var treeItem = document.createElement ('treeitem');				
+			treeItem.setAttribute ("container", attributes.isContainer);
+			treeItem.setAttribute ("open", attributes.isOpen);
+			
+			if (attributes.isContainer)
+			{
+				_elements[attributes.id +"-treeChildren"] = document.createElement ("treechildren");
+				treeItem.appendChild (_elements[attributes.id +"-treeChildren"]);				
+			}
+					
+			if (attributes.childOfId)
+			{
+				for (i in _elements)
+				{
+					dump (i +"\n")
+				}
+			
+				_elements[attributes.childOfId +"-treeChildren"].appendChild (treeItem);
+			}
+			else
+			{
+				_elements.treeChildren.appendChild (treeItem)
+			}			
+
+			var treeRow = document.createElement ('treerow');
+			treeItem.appendChild (treeRow);
+															
+			for (index in attributes.columns)
+			{
+				var treeCell = document.createElement ('treecell');
+				treeCell.setAttribute ('label', attributes.columns[index]);
+				treeRow.appendChild (treeCell);
+			}
+			
+			return attributes.id;
+		}	
+	},
+		
 	locations :
 	{
 		init : function ()
 		{
 			main.controls.locations.refresh ();		
+			
+			var treeview = new main.test ({element: document.getElementById ("test")});
+									
+			treeview.addRow ({columns: ["1", "Network"], id: "100", isContainer: true, isOpen: true});			
+			treeview.addRow ({columns: ["2", "Router #1"], childOfId: "100"});
+			treeview.addRow ({columns: ["3", "Router #2"], childOfId: "100"});
+			
+			treeview.addRow ({columns: ["4", "Servers"], id: "200", isContainer: true, isOpen: true});			
+			treeview.addRow ({columns: ["5", "Server #1"], childOfId: "200"});
+			treeview.addRow ({columns: ["6", "Server #2"], childOfId: "200"});
+									
+//			var children = document.getElementById ('testTreeChildren');		
+	
+//			var item1;
+//			{
+//				item1 = document.createElement('treeitem');	
+//				item1.setAttribute ("container", true);
+//				children.appendChild (item1)
+//
+//				var row = document.createElement('treerow');
+//				item1.appendChild (row);
+//				
+//				var columns = ["ID", "TITLE"];
+//									
+//				for (index in columns)
+//				{
+//					var cell = document.createElement('treecell');
+//					cell.setAttribute ('label', columns[index]);
+//					row.appendChild(cell);
+//				}
+//			}
+//			
+//			var item2;
+//			{
+//				var children2 = document.createElement ("treechildren");
+//				item1.appendChild (children2)
+//			
+//				item2 = document.createElement('treeitem');	
+//				children2.appendChild (item2)
+//
+//				var row = document.createElement('treerow');
+//				item2.appendChild (row);
+//				
+//				var columns = ["ID", "TITLE"];
+//									
+//				for (index in columns)
+//				{
+//					var cell = document.createElement('treecell');
+//					cell.setAttribute ('label', columns[index]);
+//					row.appendChild(cell);
+//				}
+//			}
+
+			
+			
+			
 		},
 								
 		create : function ()

@@ -125,7 +125,7 @@ namespace AllectusLib.Management
 				throw new Exception (string.Format (Strings.Exception.ManagementLocationSave, this._id));
 			}
 		}
-		
+
 		public XmlDocument ToXmlDocument ()
 		{
 			Hashtable result = new Hashtable ();
@@ -137,7 +137,7 @@ namespace AllectusLib.Management
 			result.Add ("title", this._title);
 			
 			return SNDK.Convert.ToXmlDocument (result, this.GetType ().FullName.ToLower ());
-		}		
+		}
 		#endregion		
 		
 		#region Public Static Methods

@@ -22,7 +22,7 @@
 	</menubar>	
 		
 	<vbox class="WindowInnerPadding" flex="1">
-		<tabbox selectedIndex="0" flex="1">						
+		<tabbox selectedIndex="1" flex="1">						
 			<tabs>
 				<tab image="chrome://allectus/content/icons/customers.svg"/>
 				<tab image="chrome://allectus/content/icons/locations.svg"/>
@@ -53,10 +53,18 @@
 					</hbox>	
 				</tabpanel>							
 				<tabpanel>
+						<tree id="test" flex="1" hidecolumnpicker="true" disabled="false" onselect="main.controls.customers.onChange ();" ondblclick="main.locations.edit ();">
+							<treecols>								
+								<treecol id="id" hidden="true"/>
+								<treecol id="title" label="Lokation" flex="1" onclick="SignonColumnSort('hostname');" persist="width" sortDirection="ascending" primary="true"/>								
+							</treecols>							
+						</tree>
+
+				
 					<hbox flex="1">
 						<tree id="locations" flex="1" hidecolumnpicker="true" disabled="true" onselect="main.controls.customers.onChange ();" ondblclick="main.locations.edit ();">
 							<treecols>
-								<treecol id="id" hidden="false" flex="1"/>
+								<treecol id="id" hidden="true"/>
 								<treecol id="title" label="Lokation" flex="1" onclick="SignonColumnSort('hostname');" persist="width" sortDirection="ascending"/>								
 							</treecols>
 							<treechildren id="locationsTreeChildren">	
