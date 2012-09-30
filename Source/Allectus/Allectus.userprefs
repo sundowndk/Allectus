@@ -1,11 +1,11 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="AppDebug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="AllectusLib/AllectusLib/Customer.cs">
     <Files>
       <File FileName="AllectusAddin/Application/xul/chrome/content/subscriptionedit/subscriptionedit.js" Line="223" Column="7" />
       <File FileName="AllectusAddin/Application/xul/chrome/content/subscriptionitemedit/subscriptionitemedit.xul" Line="1" Column="1" />
       <File FileName="AllectusAddin/Allectus/Runtime.cs" Line="42" Column="80" />
-      <File FileName="AllectusLib/AllectusLib/Customer.cs" Line="535" Column="61" />
+      <File FileName="AllectusLib/AllectusLib/Customer.cs" Line="518" Column="38" />
       <File FileName="AllectusLib/AllectusLib/Subscription.cs" Line="416" Column="23" />
       <File FileName="Test/Main.cs" Line="55" Column="30" />
       <File FileName="AllectusAddin/Allectus.Addin/Init.cs" Line="1" Column="1" />
@@ -16,5 +16,7 @@
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>e.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>
