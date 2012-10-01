@@ -216,18 +216,18 @@ namespace AllectusLib
 			}
 		}
 
-		public string CreditPolicy
-		{
-			get
-			{
-				return this._c5debitor.CreditPolicy;
-			}
-
-			set
-			{
-				this._c5debitor.CreditPolicy = value;
-			}
-		}
+//		public string CreditPolicy
+//		{
+//			get
+//			{
+//				return this._c5debitor.CreditPolicy.Id;
+//			}
+//
+//			set
+//			{
+//				this._c5debitor.CreditPolicy.Id = value;
+//			}
+//		}
 
 		public string VatNo
 		{
@@ -242,18 +242,18 @@ namespace AllectusLib
 			}
 		}
 
-		public string VatCode
-		{
-			get
-			{
-				return this._c5debitor.VatCode;
-			}
-
-			set
-			{
-				this._c5debitor.VatCode = value;
-			}
-		}
+//		public string VatCode
+//		{
+//			get
+//			{
+//				return this._c5debitor.VatCode.Id;
+//			}
+//
+//			set
+//			{
+//				this._c5debitor.VatCode.Id = value;
+//			}
+//		}
 
 		#endregion
 		
@@ -550,20 +550,20 @@ namespace AllectusLib
 				result._c5debitor.Url = (string)item["invoiceemail"];
 			}
 
-			if (item.ContainsKey ("creditpolicy"))
-			{
-				result._c5debitor.CreditPolicy = (string)item["creditpolicy"];
-			}
+//			if (item.ContainsKey ("creditpolicy"))
+//			{
+//				result._c5debitor.CreditPolicy = (string)item["creditpolicy"];
+//			}
 
 			if (item.ContainsKey ("vatno"))
 			{
 				result._c5debitor.VatNo = (string)item["vatno"];
 			}
 
-			if (item.ContainsKey ("vatcode"))
-			{
-				result._c5debitor.VatCode = (string)item["vatcode"];
-			}
+//			if (item.ContainsKey ("vatcode"))
+//			{
+//				result._c5debitor.VatCode = (string)item["vatcode"];
+//			}
 
 			return result;
 		}

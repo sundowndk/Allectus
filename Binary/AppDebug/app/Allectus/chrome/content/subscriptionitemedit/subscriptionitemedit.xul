@@ -30,16 +30,28 @@
 								<textbox id="id" flex="1" readonly="true"/>
 								<label class="Label">Oprettet:</label>
 								<datepicker id="createdate" type="normal" disabled="true"/>
-							</hbox>
+							</hbox>							
 						</groupbox>
 						
 						<groupbox>
 							<caption label="Andet"/>
 							
 							<hbox align="center">
-								<label class="Label">Text:</label>
+								<label class="Label">Varenr.:</label>
+								<textbox id="erpid" flex="1" onkeyup="main.onChange ();" />
+							</hbox>
+							<hbox align="center">
+								<label class="Label">Tekst:</label>
 								<textbox id="text" flex="1" onkeyup="main.onChange ();" />
 							</hbox>
+							<hbox align="center">
+								<label class="Label">Enhed:</label>
+								<textbox id="unit" flex="1" onkeyup="main.onChange ();" />
+							</hbox>
+							<hbox align="top">
+								<label class="Label">Notat:</label>
+								<textbox id="notes" flex="1" multiline="true" rows="2" onkeyup="main.onChange ();"/>
+							</hbox>														
 							<hbox align="center">
 								<label class="Label">Type:</label>
 								<menulist id="recurrencetype" oncommand="main.onChange ();" flex="1">
@@ -52,7 +64,7 @@
 							<hbox align="center">
 								<label class="Label">Pris:</label>
 								<textbox id="price" type="number" decimalplaces="2" hidespinbuttons="true" flex="1" onchange="main.onChange ();" />
-							</hbox>														
+							</hbox>							
 						</groupbox>
 					</vbox>
     			</tabpanel>    									

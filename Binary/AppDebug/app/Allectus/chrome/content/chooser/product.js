@@ -34,7 +34,9 @@ var main =
 	{
 		if (window.arguments[0].onDone != null)
 		{
-			window.arguments[0].onDone (main.controls.products.getSelected ());
+			var result = allectusLib.product.load (main.controls.products.getSelected ().id);
+		
+			window.arguments[0].onDone (result);
 		}
 		
 		window.close ();

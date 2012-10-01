@@ -48,8 +48,12 @@ var main =
 	
 		document.getElementById ("recurrencetype").value = main.current.recurrencetype;
 	
+		document.getElementById ("erpid").value = main.current.erpid;	
 		document.getElementById ("text").value = main.current.text;	
+		document.getElementById ("unit").value = main.current.unit;	
 		document.getElementById ("price").value = main.current.price;	
+		
+		document.getElementById ("notes").value = main.current.notes;	
 																		
 		main.onChange ();
 	},
@@ -58,8 +62,12 @@ var main =
 	{					
 		main.current.recurrencetype = document.getElementById ("recurrencetype").value;
 				
+		main.current.erpid = document.getElementById ("erpid").value;
 		main.current.text = document.getElementById ("text").value;
+		main.current.unit = document.getElementById ("unit").value;
 		main.current.price = document.getElementById ("price").value;				
+		
+		main.current.notes = document.getElementById ("notes").value;				
 	},
 	
 	save : function ()

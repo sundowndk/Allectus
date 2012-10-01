@@ -319,23 +319,19 @@ var main =
 							{
 								if (result)
 								{
-									dump (result.id)
-									
-									// Create new item.
+									// Create new item.									
 									var current = allectusLib.subscriptionItem.create (main.current);
+									current.erpid = result.id;
 									current.text = result.name;
+									current.unit = result.unit;
 									current.price = result.price;
 									allectusLib.subscriptionItem.save (current);
 									
 									window.openDialog ("chrome://allectus/content/subscriptionitemedit/subscriptionitemedit.xul", current.id, "chrome", {subscriptionItemId: current.id});
-									
-									//window.openDialog ("chrome://didius/content/caseedit/caseedit.xul", case_.id, "chrome", {caseId: case_.id});
 								}
 							};
 														
 			app.choose.product ({onDone: onDone});
-																										
-			//window.openDialog ("chrome://allectus/content/subscriptionitemedit/subscriptionitemedit.xul", current.id, "chrome", {subscriptionItemId: current.id});
 		},
 															
 		edit : function ()

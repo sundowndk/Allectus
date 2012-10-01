@@ -344,120 +344,149 @@ namespace AllectusLib
 
 		public void Bill ()
 		{
-			//			if (this.NextBilling == DateTime.Today)
-			//			{
-			int test = 0;
-			DateTime begin;
-			DateTime end;
-			DateTime next;
-			
-			int multiplier = 0;
-			
-			switch (this._type)
-			{					
-				case Enums.SubscriptionType.Monthly:
-				{
-					begin = this.NextBilling;
-					end = SNDK.Date.GetEndOfMonth (begin.Year, begin.Month);
-					next = SNDK.Date.GetStartOfMonth (begin.Year, begin.Month).AddMonths (1);
-					test = SNDK.Date.GetDaysInMonth (begin.Year, begin.Month);
-					multiplier = 1;
-					break;
-				}
-					
-				case Enums.SubscriptionType.Quarterly:
-				{
-					begin = this.NextBilling;												
-					end = SNDK.Date.GetEndOfQuarter (begin.Year, SNDK.Date.GetQuarter (begin.Month));
-					next = SNDK.Date.GetStartOfQuarter (begin.Year, SNDK.Date.GetQuarter (begin.Month)).AddMonths (3);
-					
-					test = SNDK.Date.GetDaysInQuarter (begin.Year, SNDK.Date.GetQuarter (begin.Month));
-					multiplier = 3;
-					break;
-				}
-					
-				case Enums.SubscriptionType.HalfYearly:
-				{
-					begin = this.NextBilling;						
-					
-					if (begin.Month < 7)
-					{							                                       
-						end = new DateTime (begin.Year, 6, 30, 23, 59, 59);
-						next = new DateTime (begin.Year, 7, 1);
-						test = ((new DateTime (begin.Year, 6,30, 23, 59, 59) - new DateTime (begin.Year, 1, 1)).Days) + 1;
-					}
-					else
+			while (this.NextBilling <= DateTime.Today)
+//			if (this.NextBilling <= DateTime.Today)
+			{
+				DateTime begin;
+				DateTime end;
+				DateTime next;
+
+				int days = 0;
+				int totaldays = 0;			
+				decimal months = 0;
+				decimal percentage = 100;
+				int multiplier = 0;			
+							
+				switch (this._type)
+				{					
+					case Enums.SubscriptionType.Monthly:
 					{
-						end = new DateTime (begin.Year, 12, 31, 23, 59, 59);
+						begin = this.NextBilling;
+						end = SNDK.Date.GetEndOfMonth (begin.Year, begin.Month);
+						next = SNDK.Date.GetStartOfMonth (begin.Year, begin.Month).AddMonths (1);
+						totaldays = SNDK.Date.GetDaysInMonth (begin.Year, begin.Month);
+						multiplier = 1;
+						break;
+					}
+						
+					case Enums.SubscriptionType.Quarterly:
+					{
+						begin = this.NextBilling;												
+						end = SNDK.Date.GetEndOfQuarter (begin.Year, SNDK.Date.GetQuarter (begin.Month));
+						next = SNDK.Date.GetStartOfQuarter (begin.Year, SNDK.Date.GetQuarter (begin.Month)).AddMonths (3);					
+						totaldays = SNDK.Date.GetDaysInQuarter (begin.Year, SNDK.Date.GetQuarter (begin.Month));
+						multiplier = 3;
+						break;
+					}
+						
+					case Enums.SubscriptionType.HalfYearly:
+					{
+						begin = this.NextBilling;						
+						
+						if (begin.Month < 7)
+						{							                                       
+							end = new DateTime (begin.Year, 6, 30, 23, 59, 59);
+							next = new DateTime (begin.Year, 7, 1);
+							totaldays = ((new DateTime (begin.Year, 6,30, 23, 59, 59) - new DateTime (begin.Year, 1, 1)).Days) + 1;
+						}
+						else
+						{
+							end = new DateTime (begin.Year, 12, 31, 23, 59, 59);
+							next = new DateTime (begin.Year + 1, 1, 1);						
+							totaldays = ((new DateTime (begin.Year, 12,31, 23, 59, 59) - new DateTime (begin.Year, 7, 1)).Days) + 1;
+						}
+
+						multiplier = 6;	
+						
+						break;
+					}
+						
+					case Enums.SubscriptionType.Yearly:
+					{
+						begin = this.NextBilling;
+						end = new DateTime (begin.Year, 12, 31, 23, 59, 59);	
 						next = new DateTime (begin.Year + 1, 1, 1);
 						
-						test = ((new DateTime (begin.Year, 12,31, 23, 59, 59) - new DateTime (begin.Year, 7, 1)).Days) + 1;
-					}						
-					multiplier = 6;	
-					
-					break;
+						totaldays = SNDK.Date.GetDaysInYear (begin.Year);
+						multiplier = 12;
+						break;
+					}
 				}
-					
-				case Enums.SubscriptionType.Yearly:
+
+				months = SNDK.Date.GetMonthsBetweenDates (begin, end);
+				days = ((end - begin).Days) + 1;
+
+				if (days < totaldays)
+				{				
+					percentage = Math.Round (((decimal)days / (decimal)totaldays) * 100, 2, MidpointRounding.ToEven);
+				}
+
+				Console.WriteLine ("################################################################################");
+				Console.WriteLine ("Subscription: "+ this._title +" ("+ this._id +")");
+				Console.WriteLine ("Type: "+ this._type);
+				Console.WriteLine ("Months: "+ months);
+				Console.WriteLine ("Days: "+ days +" out of "+ totaldays +" ("+ percentage +"%)");
+				Console.WriteLine ("Period: "+ begin +" > "+ end);
+				Console.WriteLine ("Next: "+ next);
+
+				C5.Order order = new C5.Order (C5.Debitor.Load (Customer.Load (this._customerid).ErpId));
+
+				Console.WriteLine ("OrderId: "+ order.Id);
+
+				foreach (SubscriptionItem item in SubscriptionItem.List (this))
 				{
-					begin = this.NextBilling;
-					end = new DateTime (begin.Year, 12, 31, 23, 59, 59);	
-					next = new DateTime (begin.Year + 1, 1, 1);
-					
-					test = SNDK.Date.GetDaysInYear (begin.Year);
-					multiplier = 12;
-					break;
+					decimal amount = 0;
+					decimal total = 0;
+					string notes = string.Empty;
+
+					switch (item.RecurrenceType)
+					{
+						case Enums.ItemRecurrenceType.Once:
+						{
+							amount = 1;
+							total = item.Price;
+							SubscriptionItem.Delete (item.Id);
+							break;
+						}
+
+						case Enums.ItemRecurrenceType.Monthly:
+						{
+							amount = months;
+							total = (item.Price * months);
+							item.Save ();
+							break;
+						}
+
+						case Enums.ItemRecurrenceType.Quarterly:
+						{
+							break;
+						}
+
+						case Enums.ItemRecurrenceType.HalfYearly:
+						{
+							break;
+						}
+
+						case Enums.ItemRecurrenceType.Yearly:
+						{
+							break;
+						}
+					}
+
+					amount = Math.Round (amount, 2);
+					total = Math.Round (total, 2);
+					notes = item.Notes + "\n"+ String.Format ("{0:dd\\/MM-yyyy}", begin) +" til "+ String.Format ("{0:dd\\/MM-yyyy}", end);
+
+					order.AddLine (item.ErpId, item.Text, begin, end, item.Unit, amount, item.Price, total, notes);
+
+					Console.WriteLine ("OrderLine: ProductId: "+ item.ErpId +" Text: "+ item.Text +" Period: "+ begin +" > "+ end +" Unit: "+ item.Unit +" Amount: "+ amount +" Price: "+ item.Price +" Total: "+ total +" Notes: "+ notes.Replace ("\n", ", "));
 				}
+
+				order.Save ();
+				
+				this._nextbilling = SNDK.Date.DateTimeToTimestamp (next);
+				this.Save ();
 			}
-
-			decimal months = SNDK.Date.GetMonthsBetweenDates (begin, end);
-//			Console.WriteLine (blabla (DateTime.Parse ("01-08-2012 00:00:00"), DateTime.Parse ("30-09-2012 00:00:00")));
-
-//			decimal months = (decimal)Math.Round (end.Subtract(begin).Days / (365.25 / 12), 2, MidpointRounding.ToEven);
-
-
-			Console.WriteLine  (months);
-
-
-//			int months = ((end - begin).Days) + 1;
-
-			int days = ((end - begin).Days) + 1;
-			
-			decimal test2 = 100;
-			
-			if (days < test)
-			{				
-				test2 = Math.Round (((decimal)days / (decimal)test)*100, 2, MidpointRounding.ToEven);				
-			}
-			
-			
-			
-			Console.WriteLine ("Period: "+ begin +" > "+ end +" = "+ days +" days, out of "+ test +" - Billing percent: "+ test2 +"% - Next billing: "+ next);
-
-
-
-			foreach (SubscriptionItem item in SubscriptionItem.List (this))
-			{
-
-
-				if (item.RecurrenceType == AllectusLib.Enums.ItemRecurrenceType.Once)
-				{
-					Console.WriteLine (item.Text +" "+  Math.Round  ((item.Price), 2, MidpointRounding.ToEven));
-				}
-				else
-				{
-					Console.WriteLine (item.Text +" "+  Math.Round  ((item.Price * months), 2, MidpointRounding.ToEven));
-				}
-			}
-			
-			//			int price = (895 * multiplier);
-			//			
-			//			decimal bla = Math.Round ( (price * test2) / 100, 2, MidpointRounding.ToEven);
-			//			
-			//			Console.WriteLine (bla);
-			
-			
-			//			}		
 		}
 
 

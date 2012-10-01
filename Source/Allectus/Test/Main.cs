@@ -21,6 +21,7 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 //
 using System;
+using System.Collections.Generic;
 
 using SNDK.DBI;
 using C5;
@@ -33,7 +34,7 @@ namespace Test
 	{
 		public static void Main (string[] args)
 		{
-			C5.Runtime.DBConnection = new Connection (SNDK.Enums.DatabaseConnector.Mssql, "172.20.0.54", "testdb", "testdb", "testdb", false);	
+			C5.Runtime.DBConnection = new Connection (SNDK.Enums.DatabaseConnector.Mssql, "172.20.0.54", "c5qnax", "c5qnax", "c5qnax", false);	
 
 			//AllectusLib.Runtime.DBConnection = new SNDK.DBI.Connection (SNDK.Enums.DatabaseConnector.Mysql, "10.0.0.40", "allectus", "allectus", "qwerty", false);
 			AllectusLib.Runtime.DBConnection = new SNDK.DBI.Connection (SNDK.Enums.DatabaseConnector.Mysql, "172.20.0.56", "allectus", "allectus", "allectus", false);
@@ -69,11 +70,20 @@ namespace Test
 			if (testsubscription)
 			{
 
+//				Customer.Load c1 = Customer.Load (new Guid ("1f032c03-eea5-47e4-b957-d5605a522431"));
 
-				Subscription s1 = Subscription.Load (new Guid ("935b3282-25cc-48a9-a249-3596a684fd20"));
+				foreach (Customer c in Customer.List ())
+				{
+					foreach (Subscription s in Subscription.List (c.Id))
+					{
+						s.Bill ();
 
-				Console.WriteLine (s1.Title);
-				s1.Bill ();
+					}
+				}
+
+//				Subscription s1 = Subscription.Load (new Guid ("935b3282-25cc-48a9-a249-3596a684fd20"));
+
+//				s1.Bill ();
 
 //				Customer d1 = new Customer ();
 //				d1.Name = "Test Customer";
@@ -142,31 +152,45 @@ namespace Test
 
 			if (testcustomer)
 			{
-				Customer c1 = new Customer ();
-				c1.Name = "Name";
-				c1.Address1 = "Address1";
-				c1.Address2 = "Address2";
-				c1.PostCode = "PostCode";
-				c1.City = "City";
-				c1.Country = "Country";
+				List<AllectusLib.Customer> customers = AllectusLib.Customer.List ();
 				
-				c1.Save ();
+				foreach (C5.Debitor debitor in C5.Debitor.List ()) 
+				{
+					if (customers.Find (delegate (Customer c) {return c.ErpId == debitor.Id; }) == null)
+					{
+						AllectusLib.Customer customer = new Customer (debitor);
+//						customer.Save ();
+						Console.WriteLine ("missing customer: "+ debitor.Name);
+//						break;						
+					}
+				}
 
-				Customer c2 = Customer.Load (c1.Id);
-				Console.WriteLine (c2.Name);
-				Console.WriteLine (c2.Address1);
-				Console.WriteLine (c2.Address2);
-				Console.WriteLine (c2.PostCode);
-				Console.WriteLine (c2.City);
-				Console.WriteLine (c2.Country);
 
-				c2.Name = "TEST TEST TEST";
-				c2.Save ();
+//				Customer c1 = new Customer ();
+//				c1.Name = "Name";
+//				c1.Address1 = "Address1";
+//				c1.Address2 = "Address2";
+//				c1.PostCode = "PostCode";
+//				c1.City = "City";
+//				c1.Country = "Country";
+//				
+//				c1.Save ();
 
-				Customer c3 = Customer.Load (c1.Id);
-				Console.WriteLine (c3.Name);
-
-				Customer.Delete (c1.Id);
+//				Customer c2 = Customer.Load (c1.Id);
+//				Console.WriteLine (c2.Name);
+//				Console.WriteLine (c2.Address1);
+//				Console.WriteLine (c2.Address2);
+//				Console.WriteLine (c2.PostCode);
+//				Console.WriteLine (c2.City);
+//				Console.WriteLine (c2.Country);
+//
+//				c2.Name = "TEST TEST TEST";
+//				c2.Save ();
+//
+//				Customer c3 = Customer.Load (c1.Id);
+//				Console.WriteLine (c3.Name);
+//
+//				Customer.Delete (c1.Id);
 			}
 
 		}

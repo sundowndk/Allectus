@@ -78,7 +78,7 @@
 					<hbox flex="1">
 						<tree id="subscriptionItems" flex="1" hidecolumnpicker="true" disabled="true" onselect="main.controls.subscriptionItems.onChange ();" ondblclick="main.subscriptionItems.edit ();">
 							<treecols>
-								<treecol id="id" hidden="true"/>								
+								<treecol id="id" hidden="true"/>																
 								<treecol id="text" label="Tekst" flex="2" persist="width" sortDirection="ascending"/>
 								<treecol id="price" label="Pris" flex="2" persist="width" sortDirection="ascending"/>
 							</treecols>	

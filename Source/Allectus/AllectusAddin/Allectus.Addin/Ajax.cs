@@ -204,11 +204,11 @@ namespace Allectus.Addin
 				{	
 					switch (Method.ToLower ())
 					{													
-//						case "load":
-//						{
-//							result.Add (AllectusLib.SubscriptionItem.Load (request.getValue<Guid>("id")));
-//							break;
-//						}
+						case "load":
+						{
+							result.Add (C5.Product.Load (request.getValue<string>("id")));
+							break;
+						}
 																				
 						case "list":
 						{

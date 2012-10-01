@@ -48,7 +48,9 @@ namespace AllectusLib
 		private Enums.ItemRecurrenceType _recurrencetype;
 		private int _recurrencecount;
 		private string _text;
+		private string _unit;
 		private decimal _price;
+		private string _notes;
 		#endregion
 		
 		#region Public Fields		
@@ -111,6 +113,24 @@ namespace AllectusLib
 			{
 				return this._recurrencecount;
 			}
+
+			set
+			{
+				this._recurrencecount = value;
+			}
+		}
+
+		public string Unit
+		{
+			get
+			{
+				return this._unit;
+			}
+
+			set
+			{
+				this._unit = value;
+			}
 		}
 
 		public string Text
@@ -138,7 +158,19 @@ namespace AllectusLib
 				this._price = value;
 			}
 		}
-	
+
+		public string Notes
+		{
+			get
+			{
+				return this._notes;
+			}
+
+			set
+			{
+				this._notes = value;
+			}
+		}	
 		#endregion		
 		
 		#region Constructor		
@@ -152,7 +184,9 @@ namespace AllectusLib
 			this._recurrencetype = AllectusLib.Enums.ItemRecurrenceType.Monthly;
 			this._recurrencecount = 0;
 			this._text = string.Empty;
+			this._unit = string.Empty;
 			this._price = 0;
+			this._notes = string.Empty;
 		}
 		
 		private SubscriptionItem ()
@@ -165,7 +199,9 @@ namespace AllectusLib
 			this._recurrencetype = AllectusLib.Enums.ItemRecurrenceType.Monthly;
 			this._recurrencecount = 0;
 			this._text = string.Empty;
+			this._unit = string.Empty;
 			this._price = 0;
+			this._notes = string.Empty;
 		}
 		#endregion
 		
@@ -198,8 +234,10 @@ namespace AllectusLib
 					"recurrencetype",
 					"recurrencecount",
 					"text",
-					"price"
-					);
+					"unit",
+					"price",
+					"notes"
+				);
 
 			qb.Values 
 				(	
@@ -211,7 +249,9 @@ namespace AllectusLib
 				 this._recurrencetype,
 				 this._recurrencecount,
 				 this._text,
-				 this._price				 
+				 this._unit,
+				 this._price,
+				 this._notes
 				 );
 			
 			Query query = Runtime.DBConnection.Query (qb.QueryString);
@@ -243,7 +283,9 @@ namespace AllectusLib
 			result.Add ("recurrencetype", this._recurrencetype);
 			result.Add ("recurrencecount", this._recurrencecount);
 			result.Add ("text", this._text);
+			result.Add ("unit", this._unit);
 			result.Add ("price", this._price);
+			result.Add ("notes", this._notes);
 			
 			return SNDK.Convert.ToXmlDocument (result, this.GetType ().FullName.ToLower ());
 		}		
@@ -267,7 +309,9 @@ namespace AllectusLib
 					"recurrencetype",
 					"recurrencecount",
 					"text",
-					"price"
+					"unit",
+					"price",
+					"notes"
 					);
 			
 			qb.AddWhere ("id", "=", Id);
@@ -286,7 +330,9 @@ namespace AllectusLib
 					result._recurrencetype = SNDK.Convert.IntToEnum<Enums.ItemRecurrenceType> (query.GetInt (qb.ColumnPos ("recurrencetype")));
 					result._recurrencecount = query.GetInt (qb.ColumnPos ("recurrencecount"));
 					result._text = query.GetString (qb.ColumnPos ("text"));
+					result._unit = query.GetString (qb.ColumnPos ("unit"));
 					result._price = query.GetDecimal (qb.ColumnPos ("price"));
+					result._notes = query.GetString (qb.ColumnPos ("notes"));
 					
 					success = true;
 				}
@@ -441,9 +487,19 @@ namespace AllectusLib
 				result._text = (string)item["text"];
 			}
 
+			if (item.ContainsKey ("unit"))
+			{
+				result._unit = (string)item["unit"];
+			}
+
 			if (item.ContainsKey ("price"))
 			{
 				result._price = decimal.Parse ((string)item["price"]);
+			}
+
+			if (item.ContainsKey ("notes"))
+			{
+				result._notes = (string)item["notes"];
 			}
 
 			return result;

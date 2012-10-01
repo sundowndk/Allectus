@@ -3,19 +3,16 @@ load : function (id)
 	var content = new Array ();
 	content["id"] = id;
 
-	var request = new SNDK.ajax.request (allectusLib.runtime.ajaxUrl, "cmd=Ajax;cmd.function=AllectusLib.Customer.Load", "data", "POST", false);		
+	var request = new SNDK.ajax.request (allectusLib.runtime.ajaxUrl, "cmd=Ajax;cmd.function=AllectusLib.Product.Load", "data", "POST", false);		
 	request.send (content);
 
-	var result = request.respons ()["allectuslib.customer"];
-	app.events.onCustomerLoad.execute (result);
+	var result = request.respons ()["c5.product"];	
 
 	return result;
 },
 				
 list : function (attributes)
 {
-dump ("dfdg")
-
 	if (!attributes) attributes = new Array ();
 	
 	if (attributes.async)

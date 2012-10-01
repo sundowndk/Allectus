@@ -1,22 +1,18 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="AppDebug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="AllectusLib/AllectusLib/Customer.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Test" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Test/Main.cs">
     <Files>
-      <File FileName="AllectusAddin/Application/xul/chrome/content/subscriptionedit/subscriptionedit.js" Line="223" Column="7" />
-      <File FileName="AllectusAddin/Application/xul/chrome/content/subscriptionitemedit/subscriptionitemedit.xul" Line="1" Column="1" />
-      <File FileName="AllectusAddin/Allectus/Runtime.cs" Line="42" Column="80" />
-      <File FileName="AllectusLib/AllectusLib/Customer.cs" Line="518" Column="38" />
-      <File FileName="AllectusLib/AllectusLib/Subscription.cs" Line="416" Column="23" />
-      <File FileName="Test/Main.cs" Line="55" Column="30" />
+      <File FileName="Test/Main.cs" Line="73" Column="58" />
+      <File FileName="AllectusLib/AllectusLib/SubscriptionItem.cs" Line="439" Column="5" />
+      <File FileName="AllectusLib/AllectusLib/Subscription.cs" Line="465" Column="35" />
+      <File FileName="AllectusLib/AllectusLib/Runtime.cs" Line="1" Column="1" />
+      <File FileName="AllectusAddin/Allectus/Runtime.cs" Line="49" Column="7" />
       <File FileName="AllectusAddin/Allectus.Addin/Init.cs" Line="1" Column="1" />
-      <File FileName="AllectusAddin/Application/xul/chrome/content/customeredit/customeredit.xul" Line="73" Column="28" />
-      <File FileName="AllectusAddin/Application/xul/chrome/content/customeredit/customeredit.js" Line="237" Column="57" />
+      <File FileName="AllectusLib/AllectusLib/Customer.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-</Properties>e.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>
