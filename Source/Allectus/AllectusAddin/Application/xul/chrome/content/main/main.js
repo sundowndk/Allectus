@@ -9,12 +9,17 @@ var sXUL =
 		{
 			_attributes = attributes;				
 			_elements = Array ();
+			_rows = Array ();
+			
+			_temp = {};
 			
 			this.addRow = addRow;
 			this.removeRow = removeRow;
 			
 			this.setRow = setRow;
 			this.getRow = getRow;
+			
+			this.sort = sort;
 			
 			this.clear = clear;
 			
@@ -40,13 +45,128 @@ var sXUL =
 				{
 					throw "No Id column found.";
 				}				
+				
+				_temp.sortedTreeCol = document.getElementById ("title");				
+				_temp.sortedTreeCol.setAttribute("sortDirection", "ascending");
+				_temp.sortDirection = "ascending";								  				
 			};
 			
 			function getCurrentIndex ()
 			{
 				return _elements.tree.view.selection.currentIndex; //returns -1 if the tree is not focused
 			}
-									
+			
+			function sort (attributes)
+			{
+				clear ();
+								
+  				_temp.sortedTreeCol.removeAttribute ("sortDirection");
+  				
+  				if (_temp.sortDirection == "ascending")
+  				{
+  					_temp.sortDirection = "descending";
+  				}
+  				else
+  				{
+  					_temp.sortDirection = "ascending";
+  				}
+				
+				
+				var column = "title";
+				
+				var compareFunc;
+  				if (_temp.sortDirection == "ascending") 
+  				{
+    				compareFunc = 	function (second, first) 
+    								{    									    							
+      									if (first.data[column].toLowerCase () < second.data[column].toLowerCase ())
+    									{
+    										return -1;	
+    									}
+    									
+    									if (first.data[column].toLowerCase () > second.data[column].toLowerCase ())
+    									{
+    										return 1;	
+    									}
+    								}
+  				} 
+  				else 
+  				{  				
+    				compareFunc = 	function (first, second) 
+    								{       									
+    									if (first.data[column].toLowerCase () < second.data[column].toLowerCase ())
+    									{
+    										return -1;	
+    									}
+    									
+    									if (first.data[column].toLowerCase () > second.data[column].toLowerCase ())
+    									{
+    										return 1;	
+    									}
+    									return 0;      								
+    								}
+  				}
+				
+				_rows.sort (compareFunc);
+
+				for (var idx = 0; idx < 11; idx++) 
+				{
+					for (index in _rows)
+					{					
+						if (_rows[index].level == idx)
+						{
+							addRow (_rows[index]);
+						}
+					}
+				}
+				
+				dump (_temp.sortDirection)
+				
+				 _temp.sortedTreeCol.setAttribute ("sortDirection", _temp.sortDirection);
+			}
+			
+			function CompareLowerCase(first, second) {
+  var firstLower, secondLower;
+
+  // Are we sorting nsILoginInfo entries or just strings?
+  if (first.hostname) {
+    firstLower  = first.hostname.toLowerCase();
+    secondLower = second.hostname.toLowerCase();
+  } else {
+    firstLower  = first.toLowerCase();
+    secondLower = second.toLowerCase();
+  }
+
+  if (firstLower < secondLower) {
+    return -1;
+  }
+
+  if (firstLower > secondLower) {
+    return 1;
+  }
+
+  return 0;
+}
+			function getLevel (element)
+			{				
+				var parser =	function (element, count)
+								{
+									dump (element.parentNode.nodeName +" : "+ count +"\n");
+									if (element.parentNode.nodeName != "tree")
+									{
+										if (element.parentNode.nodeName != "treechildren")
+										{
+											count++;
+										}
+										
+										return parser (element.parentNode, count++)
+									}
+									return count;				
+								};
+			
+				return parser (element, 0);				
+			}
+												
 			function addRow (attributes)
 			{
 				// Set attributes.
@@ -69,11 +189,11 @@ var sXUL =
 				var treeItem = document.createElement ('treeitem');				
 				treeItem.setAttribute ("id", attributes.data.id +"-treeitem");
 				
+				//dump (attributes.id +"\n")
+				
 				// If isChildOfId is set, append TreeItem to correct TreeChildren.
 				if (attributes.isChildOfId)
-				{									
-					dump (attributes.isChildOfId +"\n");
-
+				{														
 					if (!_elements[attributes.isChildOfId] +"-treeChildren")
 					{						
 						var treeChildren = document.createElement ("treechildren");
@@ -88,8 +208,11 @@ var sXUL =
 				else
 				{
 					_elements.treeChildren.appendChild (treeItem)
-				}			
-
+				}		
+				
+				// Get treelevel.
+				attributes.level = getLevel (treeItem);
+												
 				// Create TreeRow.
 				var treeRow = document.createElement ('treerow');
 				treeItem.appendChild (treeRow);
@@ -107,6 +230,24 @@ var sXUL =
 						treeRow.appendChild (treeCell);
 					}
 				}
+				
+				var checkforrow =	function (id)
+									{
+									    for (var idx = 0; idx < _rows.length; idx++) 
+									    {
+        									if (_rows[idx].id == id) 
+        									{
+            									return true;
+        									}
+    									}    									
+    									return false;
+									};
+			
+				//if (_rows[attributes.id] == null)
+				if (!checkforrow (attributes.id))
+				{
+			 		_rows[_rows.length] = attributes;
+			 	}
 												
 				return attributes.id;
 			}	
@@ -224,15 +365,148 @@ var sXUL =
 			
 			function clear ()
 			{				
-				while (_elements.treechildren.firstChild) 
+				while (_elements.treeChildren.firstChild) 
 				{
- 					_elements.treechildren.removeChild (_elements.treechildren.firstChild);
+ 					_elements.treeChildren.removeChild (_elements.treeChildren.firstChild);
 				}
 			}
 		}	
 	}
 }
 
+var lastSignonSortColumn = "name";
+var lastSignonSortAscending = true;
+var signonsTree = document.getElementById ("customers");
+
+function getColumnByName(column) {
+  switch (column) {
+    case "name":
+      return document.getElementById("name");    
+  }
+}
+
+function GetTreeSelections(tree) {
+  var selections = [];
+  var select = tree.view.selection;
+  if (select) {
+    var count = select.getRangeCount();
+    var min = new Object();
+    var max = new Object();
+    for (var i=0; i<count; i++) {
+      select.getRangeAt(i, min, max);
+      for (var k=min.value; k<=max.value; k++) {
+        if (k != -1) {
+          selections[selections.length] = k;
+        }
+      }
+    }
+  }
+  return selections;
+}
+
+//function SortTree(tree, view, table, column, lastSortColumn, lastSortAscending, updateSelection) {
+function SortTree(tree, column, sortdirection) {
+
+  // remember which item was selected so we can restore it after the sort
+//  var selections = GetTreeSelections(tree);
+//  var selectedNumber = selections.length ? table[selections[0]].number : -1;
+
+  // determine if sort is to be ascending or descending
+//  var ascending = (column == lastSortColumn) ? !lastSortAscending : true;
+	var ascending = true;
+
+  // do the sort
+  var compareFunc;
+  if (ascending) {
+    compareFunc = function compare(first, second) {
+      return CompareLowerCase(first[column], second[column]);
+    }
+  } else {
+    compareFunc = function compare(first, second) {
+      return CompareLowerCase(second[column], first[column]);
+    }
+  }
+//  table.sort (compareFunc);
+
+  // restore the selection
+//  var selectedRow = -1;
+//  if (selectedNumber>=0 && updateSelection) {
+//    for (var s=0; s<table.length; s++) {
+//      if (table[s].number == selectedNumber) {
+//        // update selection
+//        // note: we need to deselect before reselecting in order to trigger ...Selected()
+//        tree.view.selection.select(-1);
+//        tree.view.selection.select(s);
+ //       selectedRow = s;
+//        break;
+//      }
+//    }
+//  }
+
+  // display the results
+  //tree.treeBoxObject.invalidate();
+//  if (selectedRow >= 0) {
+//    tree.treeBoxObject.ensureRowIsVisible(selectedRow)
+//  }
+
+  return ascending;
+}
+
+/**
+ * Case insensitive string comparator.
+ */
+function CompareLowerCase(first, second) {
+  var firstLower, secondLower;
+
+  // Are we sorting nsILoginInfo entries or just strings?
+  if (first.hostname) {
+    firstLower  = first.hostname.toLowerCase();
+    secondLower = second.hostname.toLowerCase();
+  } else {
+    firstLower  = first.toLowerCase();
+    secondLower = second.toLowerCase();
+  }
+
+  if (firstLower < secondLower) {
+    return -1;
+  }
+
+  if (firstLower > secondLower) {
+    return 1;
+  }
+
+  return 0;
+}
+
+function SignonColumnSort(column) {
+  // clear out the sortDirection attribute on the old column
+  var lastSortedCol = getColumnByName(lastSignonSortColumn);
+  lastSortedCol.removeAttribute("sortDirection");
+
+
+
+
+SortTree (document.getElementById ("customers"), column, "ascending");
+
+  // sort
+//  lastSignonSortAscending =
+//    SortTree(signonsTree, signonsTreeView,
+//                 signonsTreeView._filterSet.length ? signonsTreeView._filterSet : signons,
+ //                column, lastSignonSortColumn, lastSignonSortAscending);
+ // lastSignonSortColumn = column;
+
+  // set the sortDirection attribute to get the styling going
+  // first we need to get the right element
+  
+  var sortedCol = getColumnByName(column);
+  sortedCol.setAttribute("sortDirection", "ascending");
+}
+
+sorttest = function (column)
+{
+
+
+}
 
 var main = 
 {
@@ -283,10 +557,10 @@ var main =
 				item.appendChild (row);
 
 				var columns = [customer["id"], customer["name"], customer["address1"], customer["postcode"], customer["city"], customer["email"]]
-									
+												
 				for (index in columns)
-				{
-					var cell = document.createElement('treecell');
+				{				
+					var cell = document.createElement('treecell');							
 					cell.setAttribute ('label', columns[index]);
 					row.appendChild(cell);																		
 				}
@@ -743,6 +1017,11 @@ var main =
 //					row.appendChild(cell);
 //				}
 //			}									
+		},
+		
+		sort : function (column)
+		{
+			main.locations.locationsTreeHelper.sort (column);	
 		},
 		
 		set : function ()
