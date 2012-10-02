@@ -11,15 +11,15 @@ var sXUL =
 			_elements = Array ();
 			_rows = Array ();
 			
-			_temp = {};
+			_temp = {};			
 			
 			this.addRow = addRow;
 			this.removeRow = removeRow;
 			
 			this.setRow = setRow;
 			this.getRow = getRow;
-			
-			this.sort = sort;
+									
+			this.sort = sort;									
 			
 			this.clear = clear;
 			
@@ -46,9 +46,30 @@ var sXUL =
 					throw "No Id column found.";
 				}				
 				
-				_temp.sortedTreeCol = document.getElementById ("title");				
-				_temp.sortedTreeCol.setAttribute("sortDirection", "ascending");
-				_temp.sortDirection = "ascending";								  				
+				if (attributes.sort)
+				{
+					_temp.sortColumn = attributes.sort;
+					_temp.sortDirection = attributes.sortDirection;
+					
+					// Set sortdirection on newly sorted column.	
+					document.getElementById (_temp.sortColumn).setAttribute ("sortDirection", _temp.sortDirection);		
+					
+					//sort ({column: attributes.sort, direction: attributes.sortDirection});
+				}
+														
+				//_temp.filterColumn = attributes.filter.split (",");
+				if (attributes.filter)
+				{
+					_temp.filterColumn = attributes.filter;
+					_temp.filterValue = attributes.filterValue;
+					_temp.filterDirection = attributes.filterDirection;
+				}
+																																															
+				//_temp.sortedColumn = "title";
+				//_temp.sortedDirection = "ascending";
+														
+				//document.getElementById (_temp.sortedColumn).setAttribute("sortDirection", "ascending");								
+				
 			};
 			
 			function getCurrentIndex ()
@@ -56,35 +77,22 @@ var sXUL =
 				return _elements.tree.view.selection.currentIndex; //returns -1 if the tree is not focused
 			}
 			
-			function sort (attributes)
-			{
+			function refresh ()
+			{									
+				// Clear all rows.
 				clear ();
-								
-  				_temp.sortedTreeCol.removeAttribute ("sortDirection");
-  				
-  				if (_temp.sortDirection == "ascending")
-  				{
-  					_temp.sortDirection = "descending";
-  				}
-  				else
-  				{
-  					_temp.sortDirection = "ascending";
-  				}
-				
-				
-				var column = "title";
 				
 				var compareFunc;
   				if (_temp.sortDirection == "ascending") 
   				{
     				compareFunc = 	function (second, first) 
     								{    									    							
-      									if (first.data[column].toLowerCase () < second.data[column].toLowerCase ())
+      									if (first.data[_temp.sortColumn].toLowerCase () < second.data[_temp.sortColumn].toLowerCase ())
     									{
     										return -1;	
     									}
     									
-    									if (first.data[column].toLowerCase () > second.data[column].toLowerCase ())
+    									if (first.data[_temp.sortColumn].toLowerCase () > second.data[_temp.sortColumn].toLowerCase ())
     									{
     										return 1;	
     									}
@@ -94,12 +102,12 @@ var sXUL =
   				{  				
     				compareFunc = 	function (first, second) 
     								{       									
-    									if (first.data[column].toLowerCase () < second.data[column].toLowerCase ())
+    									if (first.data[_temp.sortColumn].toLowerCase () < second.data[_temp.sortColumn].toLowerCase ())
     									{
     										return -1;	
     									}
     									
-    									if (first.data[column].toLowerCase () > second.data[column].toLowerCase ())
+    									if (first.data[_temp.sortColumn].toLowerCase () > second.data[_temp.sortColumn].toLowerCase ())
     									{
     										return 1;	
     									}
@@ -107,23 +115,102 @@ var sXUL =
     								}
   				}
 				
+				// Sort rows.
 				_rows.sort (compareFunc);
-
+				
+			
 				for (var idx = 0; idx < 11; idx++) 
 				{
 					for (index in _rows)
-					{					
+					{	
+						if (_temp.filterColumn != null)
+						{
+						
+							if (_temp.filterDirection == "in")
+							{							
+								if (_rows[index].data[_temp.filterColumn].indexOf(_temp.filterValue) == -1)
+								{
+									dump (_temp.filterColumn +" "+ _temp.filterValue +"\n")
+									continue;
+								}
+							}
+							else if (_temp.filterDirection == "out")
+							{							
+								if (_rows[index].data[_temp.filterColumn].indexOf(_temp.filterValue) != -1)
+								{
+									dump (_temp.filterColumn +" "+ _temp.filterValue +"\n")
+									continue;
+								}
+							}
+						}
+													
 						if (_rows[index].level == idx)
 						{
-							addRow (_rows[index]);
+							try
+							{
+								drawRow (_rows[index]);
+							}
+							catch (Exception)
+							{							
+							}							
 						}
 					}
-				}
-				
-				dump (_temp.sortDirection)
-				
-				 _temp.sortedTreeCol.setAttribute ("sortDirection", _temp.sortDirection);
+				}				
 			}
+			
+			function sort (attributes)
+			{
+				if (!attributes)
+					attributes = new Array ();
+					
+				if (!attributes.direction)
+					attributes.direction = null;
+										
+				// Remove sortdirection on currently sorted column.
+				if (_temp.sortedColumn != null)
+				{
+					document.getElementById (_temp.sortedColumn).removeAttribute ("sortDirection");
+				}
+																				 
+				// Figure out sortdirection.
+				// If its the same column we are sorting, just reverse sort direction.
+				// If its not the same, we start with ascending.  							
+				if (attributes.direction == null)
+				{
+					if (_temp.sortedColumn == attributes.column)
+					{
+	  					if (_temp.sortedDirection == "ascending")
+  						{
+  							attributes.direction = "descending";
+  						}
+	  					else
+  						{
+	  						attributes.direction = "ascending";
+  						}
+  					}
+  					else
+  					{
+  						attributes.direction = "ascending";
+  					}
+  				}  				
+  				
+  				dump (attributes.direction +"\n")
+  				
+															
+
+
+				// Refresh rows.
+				refresh ();
+															
+				// Set sortdirection on newly sorted column.	
+				document.getElementById (attributes.column).setAttribute ("sortDirection", attributes.direction);			
+				 
+				// Keep track of what column is sorted.
+				_temp.sortedColumn = attributes.column;
+				_temp.sortedDirection = attributes.direction;
+			}
+			
+			
 			
 			function CompareLowerCase(first, second) {
   var firstLower, secondLower;
@@ -151,7 +238,7 @@ var sXUL =
 			{				
 				var parser =	function (element, count)
 								{
-									dump (element.parentNode.nodeName +" : "+ count +"\n");
+									//dump (element.parentNode.nodeName +" : "+ count +"\n");
 									if (element.parentNode.nodeName != "tree")
 									{
 										if (element.parentNode.nodeName != "treechildren")
@@ -166,7 +253,27 @@ var sXUL =
 			
 				return parser (element, 0);				
 			}
-												
+			
+			function getLevel2 (id)
+			{
+				var parser =	function (id, count)
+								{
+									count++;
+									for (index in _rows)
+									{
+										//dump (id +" "+ _rows[index].data.id +" "+ _rows[index].data.parentid +"\n")
+										
+										if ((_rows[index].data.id == id) && (_rows[index].data.parentid != SNDK.tools.emptyGuid))
+										{																					
+											return parser (_rows[index].data.parentid, count)
+										}
+									}
+									return count;
+								};
+								
+				return parser (id, 0)
+			}
+			
 			function addRow (attributes)
 			{
 				// Set attributes.
@@ -184,13 +291,44 @@ var sXUL =
 										
 				if (!attributes.isOpen)
 					attributes.isOpen = false;
-			
+					
+				if (attributes.isChildOfId)
+				{
+					attributes.level = getLevel2 (attributes.isChildOfId);
+					
+					dump (attributes.level +"\n");
+				}
+				else
+				{
+					attributes.level = 0;
+				}
+				
+				var checkforrow =	function (id)
+									{
+									    for (var idx = 0; idx < _rows.length; idx++) 
+									    {
+        									if (_rows[idx].id == id) 
+        									{
+            									return true;
+        									}
+    									}    									
+    									return false;
+									};
+				
+				if (!checkforrow (attributes.id))
+				{
+			 		_rows[_rows.length] = attributes;
+			 	}
+			 				 	
+			 	refresh ();
+			}
+												
+			function drawRow (attributes)
+			{							
 				// Create new TreeItem.
 				var treeItem = document.createElement ('treeitem');				
 				treeItem.setAttribute ("id", attributes.data.id +"-treeitem");
-				
-				//dump (attributes.id +"\n")
-				
+											
 				// If isChildOfId is set, append TreeItem to correct TreeChildren.
 				if (attributes.isChildOfId)
 				{														
@@ -244,10 +382,10 @@ var sXUL =
 									};
 			
 				//if (_rows[attributes.id] == null)
-				if (!checkforrow (attributes.id))
-				{
-			 		_rows[_rows.length] = attributes;
-			 	}
+//				if (!checkforrow (attributes.id))
+//				{
+//			 		_rows[_rows.length] = attributes;
+//			 	}
 												
 				return attributes.id;
 			}	
@@ -932,8 +1070,10 @@ var main =
 	
 		init : function ()
 		{					
-			main.locations.locationsTreeHelper = new sXUL.helpers.tree ({element: document.getElementById ("locations")});
+			//main.locations.locationsTreeHelper = new sXUL.helpers.tree ({element: document.getElementById ("locations"), sort: "title", sortDirection: "ascending", filter: "title", filterValue: "Slagelse", filterDirection: "in"});
+			main.locations.locationsTreeHelper = new sXUL.helpers.tree ({element: document.getElementById ("locations"), sort: "title", sortDirection: "descending"});
 					
+			main.locations.locationsTreeHelper.draw = true;
 			this.set ();
 								
 		//	main.controls.locations.refresh ();		

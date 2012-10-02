@@ -57,7 +57,7 @@
 						<tree id="locations" flex="1" hidecolumnpicker="true" disabled="true" onselect="main.controls.customers.onChange ();">
 							<treecols>
 								<treecol id="id" hidden="true"/>
-								<treecol id="title" label="Lokation" flex="1"  persist="width" primary="true" onclick="main.locations.sort ('name');"/>								
+								<treecol id="title" label="Lokation" flex="1"  persist="width" primary="true" onclick="main.locations.sort ({column: 'title'});"/>	
 							</treecols>							
 						</tree>
 					</hbox>

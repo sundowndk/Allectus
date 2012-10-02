@@ -2,8 +2,8 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="AppDebug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="AllectusAddin/Application/xul/chrome/content/main/main.js">
     <Files>
-      <File FileName="AllectusAddin/Application/xul/chrome/content/main/main.js" Line="69" Column="11" />
-      <File FileName="AllectusAddin/Application/xul/chrome/content/main/main.xul" Line="22" Column="12" />
+      <File FileName="AllectusAddin/Application/xul/chrome/content/main/main.js" Line="1099" Column="12" />
+      <File FileName="AllectusAddin/Application/xul/chrome/content/main/main.xul" Line="60" Column="132" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

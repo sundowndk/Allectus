@@ -34,24 +34,25 @@ namespace Test
 	{
 		public static void Main (string[] args)
 		{
-			C5.Runtime.DBConnection = new Connection (SNDK.Enums.DatabaseConnector.Mssql, "172.20.0.54", "c5qnax", "c5qnax", "c5qnax", false);	
+//			C5.Runtime.DBConnection = new Connection (SNDK.Enums.DatabaseConnector.Mssql, "172.20.0.54", "c5qnax", "c5qnax", "c5qnax", false);	
 
-			//AllectusLib.Runtime.DBConnection = new SNDK.DBI.Connection (SNDK.Enums.DatabaseConnector.Mysql, "10.0.0.40", "allectus", "allectus", "qwerty", false);
-			AllectusLib.Runtime.DBConnection = new SNDK.DBI.Connection (SNDK.Enums.DatabaseConnector.Mysql, "172.20.0.56", "allectus", "allectus", "allectus", false);
+			AllectusLib.Runtime.DBConnection = new SNDK.DBI.Connection (SNDK.Enums.DatabaseConnector.Mysql, "10.0.0.40", "allectus", "allectus", "allectus", false);
+//			AllectusLib.Runtime.DBConnection = new SNDK.DBI.Connection (SNDK.Enums.DatabaseConnector.Mysql, "172.20.0.56", "allectus", "allectus", "allectus", false);
 
 			if (!AllectusLib.Runtime.DBConnection.Connect ())
 			{
 				Console.WriteLine ("Could not connect Allectus to database!");
 			}
 
-			if (!C5.Runtime.DBConnection.Connect ())
-			{
-				Console.WriteLine ("Could not connect C5 to database!");
-			}
+//			if (!C5.Runtime.DBConnection.Connect ())
+//			{
+//				Console.WriteLine ("Could not connect C5 to database!");
+//			}
+
 
 			bool testlocation = false;
 
-			bool testsubscription = true;
+			bool testsubscription = false;
 
 			bool testcustomer = false;
 
