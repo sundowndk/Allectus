@@ -52,9 +52,7 @@ var sXUL =
 					_temp.sortDirection = attributes.sortDirection;
 					
 					// Set sortdirection on newly sorted column.	
-					document.getElementById (_temp.sortColumn).setAttribute ("sortDirection", _temp.sortDirection);		
-					
-					//sort ({column: attributes.sort, direction: attributes.sortDirection});
+					document.getElementById (_temp.sortColumn).setAttribute ("sortDirection", _temp.sortDirection);									
 				}
 														
 				//_temp.filterColumn = attributes.filter.split (",");
@@ -130,7 +128,7 @@ var sXUL =
 							{							
 								if (_rows[index].data[_temp.filterColumn].indexOf(_temp.filterValue) == -1)
 								{
-									dump (_temp.filterColumn +" "+ _temp.filterValue +"\n")
+									//dump (_temp.filterColumn +" "+ _temp.filterValue +"\n")
 									continue;
 								}
 							}
@@ -138,7 +136,7 @@ var sXUL =
 							{							
 								if (_rows[index].data[_temp.filterColumn].indexOf(_temp.filterValue) != -1)
 								{
-									dump (_temp.filterColumn +" "+ _temp.filterValue +"\n")
+									//dump (_temp.filterColumn +" "+ _temp.filterValue +"\n")
 									continue;
 								}
 							}
@@ -167,9 +165,9 @@ var sXUL =
 					attributes.direction = null;
 										
 				// Remove sortdirection on currently sorted column.
-				if (_temp.sortedColumn != null)
+				if (_temp.sortColumn != null)
 				{
-					document.getElementById (_temp.sortedColumn).removeAttribute ("sortDirection");
+					document.getElementById (_temp.sortColumn).removeAttribute ("sortDirection");
 				}
 																				 
 				// Figure out sortdirection.
@@ -177,9 +175,9 @@ var sXUL =
 				// If its not the same, we start with ascending.  							
 				if (attributes.direction == null)
 				{
-					if (_temp.sortedColumn == attributes.column)
+					if (_temp.sortColumn == attributes.column)
 					{
-	  					if (_temp.sortedDirection == "ascending")
+	  					if (_temp.sortDirection == "ascending")
   						{
   							attributes.direction = "descending";
   						}
@@ -194,20 +192,14 @@ var sXUL =
   					}
   				}  				
   				
-  				dump (attributes.direction +"\n")
-  				
-															
-
-
+  				_temp.sortColumn = attributes.column;
+  				_temp.sortDirection = attributes.direction; 
+  				  				  																		
 				// Refresh rows.
 				refresh ();
 															
 				// Set sortdirection on newly sorted column.	
-				document.getElementById (attributes.column).setAttribute ("sortDirection", attributes.direction);			
-				 
-				// Keep track of what column is sorted.
-				_temp.sortedColumn = attributes.column;
-				_temp.sortedDirection = attributes.direction;
+				document.getElementById (attributes.column).setAttribute ("sortDirection", _temp.sortDirection);				 												
 			}
 			
 			
@@ -431,36 +423,63 @@ var sXUL =
 						
 				if (!attributes.data)
 					attributes.data = new Array ();
-						
+										
 				if (!attributes.data.id)
 				{
-					row = _elements.tree.currentIndex;
+				
 				}
 				else
 				{
-					for (var idx = 0; idx < _elements.tree.view.rowCount; idx++) 
-					{	
-						if (_elements.tree.view.getCellText (idx, _elements.tree.columns.getNamedColumn ('id')) == attributes.data.id)
-						{					
-							row = idx;
-							break;
+					for (idx in _rows)
+					{
+						if (_rows[idx].data.id == attributes.data.id)
+						{
+							// Find TreeColumns and change data.
+							var treeColumns = _elements.tree.columns;											
+							for (var idx2 = 0; idx2 < treeColumns.length; idx2++)
+							{
+								var treeColumn = treeColumns.getColumnAt (idx2);
+								if (attributes.data[treeColumn.id] != null)
+								{
+									_rows[idx].data[treeColumn.id] = attributes.data[treeColumn.id];									
+								}
+							}		
+							break;										
 						}
 					}
 				}
+				
+				refresh ();
+				
+//				if (!attributes.data.id)
+//				{
+//					row = _elements.tree.currentIndex;
+//				}
+//				else
+//				{
+//					for (var idx = 0; idx < _elements.tree.view.rowCount; idx++) 
+//					{	
+//						if (_elements.tree.view.getCellText (idx, _elements.tree.columns.getNamedColumn ('id')) == attributes.data.id)
+//						{					
+//							row = idx;
+//							break;
+//						}
+//					}
+//				}
 					
-				if (row != -1)
-				{
-					// Find TreeColumns and change data.
-					var treeColumns = _elements.tree.columns;											
-					for (var idx = 0; idx < treeColumns.length; idx++)
-					{
-						var treeColumn = treeColumns.getColumnAt (idx);											
-						if (attributes.data[treeColumn.id] != null)
-						{
-							_elements.tree.view.setCellText (row, treeColumn, attributes.data[treeColumn.id]);
-						}
-					}												
-				}
+//				if (row != -1)
+//				{
+//					// Find TreeColumns and change data.
+//					var treeColumns = _elements.tree.columns;											
+//					for (var idx = 0; idx < treeColumns.length; idx++)
+//					{
+//						var treeColumn = treeColumns.getColumnAt (idx);											
+//						if (attributes.data[treeColumn.id] != null)
+//						{
+//							_elements.tree.view.setCellText (row, treeColumn, attributes.data[treeColumn.id]);
+//						}
+//					}												
+//				}
 			}
 			
 			function getRow (attributes)
@@ -1070,11 +1089,38 @@ var main =
 	
 		init : function ()
 		{					
-			//main.locations.locationsTreeHelper = new sXUL.helpers.tree ({element: document.getElementById ("locations"), sort: "title", sortDirection: "ascending", filter: "title", filterValue: "Slagelse", filterDirection: "in"});
-			main.locations.locationsTreeHelper = new sXUL.helpers.tree ({element: document.getElementById ("locations"), sort: "title", sortDirection: "descending"});
+			main.locations.locationsTreeHelper = new sXUL.helpers.tree ({element: document.getElementById ("locations"), sort: "title", sortDirection: "ascending", filter: "title", filterValue: "Slagelse", filterDirection: "in"});
+			//main.locations.locationsTreeHelper = new sXUL.helpers.tree ({element: document.getElementById ("locations"), sort: "title", sortDirection: "descending"});
+			
+			var data1 = new Array ();
+			data1.id = "1";
+			data1.title = "Network";
+			
+			var data2 = new Array ();
+			data2.id = "2";
+			data2.title = "Router #1";
+			data2.test = "bla"			
+			
+			var data3 = new Array ();
+			data3.id = "3";
+			data3.title = "Router #2";
+			
+			var data4 = new Array ();
+			data4.id = "3";
+			data4.title = "Slagelse";
+			
+			var data5 = new Array ();
+			data5.id = "3";
+			data5.title = "Slagelse Nummer 2";
 					
-			main.locations.locationsTreeHelper.draw = true;
-			this.set ();
+			main.locations.locationsTreeHelper.addRow ({data: data1});	
+			main.locations.locationsTreeHelper.addRow ({data: data2});
+			main.locations.locationsTreeHelper.addRow ({data: data3});
+			main.locations.locationsTreeHelper.addRow ({data: data4});
+			
+			main.locations.locationsTreeHelper.setRow ({data: data5});
+			
+			//this.set ();
 								
 		//	main.controls.locations.refresh ();		
 			
