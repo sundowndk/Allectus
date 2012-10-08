@@ -34,10 +34,10 @@ namespace Test
 	{
 		public static void Main (string[] args)
 		{
-//			C5.Runtime.DBConnection = new Connection (SNDK.Enums.DatabaseConnector.Mssql, "172.20.0.54", "c5qnax", "c5qnax", "c5qnax", false);	
+			C5.Runtime.DBConnection = new Connection (SNDK.Enums.DatabaseConnector.Mssql, "172.20.0.54", "c5qnax", "c5qnax", "c5qnax", false);	
 
-			AllectusLib.Runtime.DBConnection = new SNDK.DBI.Connection (SNDK.Enums.DatabaseConnector.Mysql, "10.0.0.40", "allectus", "allectus", "allectus", false);
-//			AllectusLib.Runtime.DBConnection = new SNDK.DBI.Connection (SNDK.Enums.DatabaseConnector.Mysql, "172.20.0.56", "allectus", "allectus", "allectus", false);
+//			AllectusLib.Runtime.DBConnection = new SNDK.DBI.Connection (SNDK.Enums.DatabaseConnector.Mysql, "10.0.0.40", "allectus", "allectus", "allectus", false);
+			AllectusLib.Runtime.DBConnection = new SNDK.DBI.Connection (SNDK.Enums.DatabaseConnector.Mysql, "172.20.0.56", "allectus", "allectus", "allectus", false);
 
 			if (!AllectusLib.Runtime.DBConnection.Connect ())
 			{
@@ -52,7 +52,7 @@ namespace Test
 
 			bool testlocation = false;
 
-			bool testsubscription = false;
+			bool testsubscription = true;
 
 			bool testcustomer = false;
 
@@ -75,6 +75,8 @@ namespace Test
 
 				foreach (Customer c in Customer.List ())
 				{
+					Console.WriteLine (c.Name);
+
 					foreach (Subscription s in Subscription.List (c.Id))
 					{
 						s.Bill ();
