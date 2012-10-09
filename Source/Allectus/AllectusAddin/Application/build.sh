@@ -35,6 +35,11 @@ for file in ../../Lib/sndk/*; do
     cp -rv $file "$OUTPUTDIR/app/Allectus/chrome/content/js/sndk/"
 done
 
+mkdir "$OUTPUTDIR/app/Allectus/chrome/content/js/sxul"
+for file in ../../Lib/sxul/*; do
+    cp -rv $file "$OUTPUTDIR/app/Allectus/chrome/content/js/sxul/"
+done
+
 ####################################################
 # INCLUDES                                         #
 ####################################################
@@ -42,7 +47,6 @@ echo "Copying 'xul''..."
 for file in Application/js/app/*; do
     cp -rv $file "$OUTPUTDIR/app/Allectus/chrome/content/js/"
 done
-
 
 ####################################################
 # JAVASCRIPT                                       #

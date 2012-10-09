@@ -1,12 +1,12 @@
-<<<<<<< HEAD
-=======
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="AppDebug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="AllectusAddin/Application/xul/chrome/content/main/main.js">
+  <MonoDevelop.Ide.Workbench ActiveDocument="AllectusAddin/Application/xul/chrome/content/main/main.xul">
     <Files>
-      <File FileName="AllectusAddin/Application/xul/chrome/content/main/main.js" Line="1" Column="4" />
-      <File FileName="AllectusAddin/Application/xul/chrome/content/main/main.xul" Line="60" Column="135" />
-      <File FileName="AllectusAddin/Application/js/allectusLib/runtime.js" Line="8" Column="1" />
+      <File FileName="AllectusAddin/Application/xul/chrome/content/main/main.xul" Line="60" Column="64" />
+      <File FileName="AllectusAddin/Application/xul/chrome/content/main/main.js" Line="401" Column="57" />
+      <File FileName="AllectusAddin/Application/js/allectusLib/runtime.js" Line="1" Column="9" />
+      <File FileName="AllectusAddin/Application/xul/chrome/content/chooser/product.js" Line="31" Column="64" />
+      <File FileName="AllectusAddin/Application/xul/chrome/content/chooser/product.xul" Line="17" Column="133" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
@@ -14,4 +14,3 @@
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>
->>>>>>> 6fd216159b95f36cda4602d85da4372a3a865325

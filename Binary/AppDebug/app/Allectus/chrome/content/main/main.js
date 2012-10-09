@@ -1,670 +1,5 @@
 Components.utils.import("resource://allectus/js/app.js");
 
- 
-var sXUL = 
-{
-	helpers :
-	{
-		tree : function (attributes)
-		{
-			_attributes = attributes;				
-			_elements = Array ();
-			_rows = Array ();
-			
-			_temp = {};			
-			
-			this.addRow = addRow;
-			this.removeRow = removeRow;
-			
-			this.setRow = setRow;
-			this.getRow = getRow;
-									
-			this.sort = sort;									
-			
-			this.clear = clear;
-			
-			this.getCurrentIndex = getCurrentIndex;
-			
-			init (attributes);
-		
-			function init (attributes)
-			{
-				if (!attributes)
-					attributes = new Array ();
-					
-				if (!attributes.element)
-					throw "Need an treeview element to attatch to.";
-			
-				_elements.tree = attributes.element;				
-				_elements.treeChildren = document.createElement ("treechildren");
-				_elements.tree.appendChild (_elements.treeChildren);
-												
-				// Check if Id TreeColumn exists
-				var treeColumns = _elements.tree.columns;
-				if (!treeColumns.getNamedColumn ("id"))
-				{
-					throw "No Id column found.";
-				}				
-				
-				if (attributes.sort)
-				{
-					_temp.sortColumn = attributes.sort;
-					_temp.sortDirection = attributes.sortDirection;
-					
-					// Set sortdirection on newly sorted column.	
-					document.getElementById (_temp.sortColumn).setAttribute ("sortDirection", _temp.sortDirection);									
-				}
-														
-				//_temp.filterColumn = attributes.filter.split (",");
-				if (attributes.filter)
-				{
-					_temp.filterColumn = attributes.filter;
-					_temp.filterValue = attributes.filterValue;
-					_temp.filterDirection = attributes.filterDirection;
-				}
-																																															
-				//_temp.sortedColumn = "title";
-				//_temp.sortedDirection = "ascending";
-														
-				//document.getElementById (_temp.sortedColumn).setAttribute("sortDirection", "ascending");								
-				
-			};
-			
-			function getCurrentIndex ()
-			{
-				return _elements.tree.view.selection.currentIndex; //returns -1 if the tree is not focused
-			}
-			
-			function refresh ()
-			{									
-				// Clear all rows.
-				clear ();
-				
-				var compareFunc;
-  				if (_temp.sortDirection == "ascending") 
-  				{
-    				compareFunc = 	function (second, first) 
-    								{    									    							
-      									if (first.data[_temp.sortColumn].toLowerCase () < second.data[_temp.sortColumn].toLowerCase ())
-    									{
-    										return -1;	
-    									}
-    									
-    									if (first.data[_temp.sortColumn].toLowerCase () > second.data[_temp.sortColumn].toLowerCase ())
-    									{
-    										return 1;	
-    									}
-    								}
-  				} 
-  				else 
-  				{  				
-    				compareFunc = 	function (first, second) 
-    								{       									
-    									if (first.data[_temp.sortColumn].toLowerCase () < second.data[_temp.sortColumn].toLowerCase ())
-    									{
-    										return -1;	
-    									}
-    									
-    									if (first.data[_temp.sortColumn].toLowerCase () > second.data[_temp.sortColumn].toLowerCase ())
-    									{
-    										return 1;	
-    									}
-    									return 0;      								
-    								}
-  				}
-				
-				// Sort rows.
-				_rows.sort (compareFunc);
-				
-			
-				for (var idx = 0; idx < 11; idx++) 
-				{
-					for (index in _rows)
-					{	
-						if (_temp.filterColumn != null)
-						{
-						
-							if (_temp.filterDirection == "in")
-							{							
-								if (_rows[index].data[_temp.filterColumn].indexOf(_temp.filterValue) == -1)
-								{
-									//dump (_temp.filterColumn +" "+ _temp.filterValue +"\n")
-									continue;
-								}
-							}
-							else if (_temp.filterDirection == "out")
-							{							
-								if (_rows[index].data[_temp.filterColumn].indexOf(_temp.filterValue) != -1)
-								{
-									//dump (_temp.filterColumn +" "+ _temp.filterValue +"\n")
-									continue;
-								}
-							}
-						}
-													
-						if (_rows[index].level == idx)
-						{
-							try
-							{
-								drawRow (_rows[index]);
-							}
-							catch (Exception)
-							{							
-							}							
-						}
-					}
-				}				
-			}
-			
-			function sort (attributes)
-			{
-				if (!attributes)
-					attributes = new Array ();
-					
-				if (!attributes.direction)
-					attributes.direction = null;
-										
-				// Remove sortdirection on currently sorted column.
-				if (_temp.sortColumn != null)
-				{
-					document.getElementById (_temp.sortColumn).removeAttribute ("sortDirection");
-				}
-																				 
-				// Figure out sortdirection.
-				// If its the same column we are sorting, just reverse sort direction.
-				// If its not the same, we start with ascending.  							
-				if (attributes.direction == null)
-				{
-					if (_temp.sortColumn == attributes.column)
-					{
-	  					if (_temp.sortDirection == "ascending")
-  						{
-  							attributes.direction = "descending";
-  						}
-	  					else
-  						{
-	  						attributes.direction = "ascending";
-  						}
-  					}
-  					else
-  					{
-  						attributes.direction = "ascending";
-  					}
-  				}  				
-  				
-  				_temp.sortColumn = attributes.column;
-  				_temp.sortDirection = attributes.direction; 
-  				  				  																		
-				// Refresh rows.
-				refresh ();
-															
-				// Set sortdirection on newly sorted column.	
-				document.getElementById (attributes.column).setAttribute ("sortDirection", _temp.sortDirection);				 												
-			}
-			
-			
-			
-			function CompareLowerCase(first, second) {
-  var firstLower, secondLower;
-
-  // Are we sorting nsILoginInfo entries or just strings?
-  if (first.hostname) {
-    firstLower  = first.hostname.toLowerCase();
-    secondLower = second.hostname.toLowerCase();
-  } else {
-    firstLower  = first.toLowerCase();
-    secondLower = second.toLowerCase();
-  }
-
-  if (firstLower < secondLower) {
-    return -1;
-  }
-
-  if (firstLower > secondLower) {
-    return 1;
-  }
-
-  return 0;
-}
-			function getLevel (element)
-			{				
-				var parser =	function (element, count)
-								{
-									//dump (element.parentNode.nodeName +" : "+ count +"\n");
-									if (element.parentNode.nodeName != "tree")
-									{
-										if (element.parentNode.nodeName != "treechildren")
-										{
-											count++;
-										}
-										
-										return parser (element.parentNode, count++)
-									}
-									return count;				
-								};
-			
-				return parser (element, 0);				
-			}
-			
-			function getLevel2 (id)
-			{
-				var parser =	function (id, count)
-								{
-									count++;
-									for (index in _rows)
-									{
-										//dump (id +" "+ _rows[index].data.id +" "+ _rows[index].data.parentid +"\n")
-										
-										if ((_rows[index].data.id == id) && (_rows[index].data.parentid != SNDK.tools.emptyGuid))
-										{																					
-											return parser (_rows[index].data.parentid, count)
-										}
-									}
-									return count;
-								};
-								
-				return parser (id, 0)
-			}
-			
-			function addRow (attributes)
-			{
-				// Set attributes.
-				if (!attributes)
-					attributes = new Array ();
-					
-				if (!attributes.id)
-					attributes.id = SNDK.tools.newGuid ();
-					
-				if (!attributes.data)
-					attributes.data = new Array ();
-					
-				if (!attributes.data.id)
-					throw "Data does not container Id key.";
-										
-				if (!attributes.isOpen)
-					attributes.isOpen = false;
-					
-				if (attributes.isChildOfId)
-				{
-					attributes.level = getLevel2 (attributes.isChildOfId);
-					
-					dump (attributes.level +"\n");
-				}
-				else
-				{
-					attributes.level = 0;
-				}
-				
-				var checkforrow =	function (id)
-									{
-									    for (var idx = 0; idx < _rows.length; idx++) 
-									    {
-        									if (_rows[idx].id == id) 
-        									{
-            									return true;
-        									}
-    									}    									
-    									return false;
-									};
-				
-				if (!checkforrow (attributes.id))
-				{
-			 		_rows[_rows.length] = attributes;
-			 	}
-			 				 	
-			 	refresh ();
-			}
-												
-			function drawRow (attributes)
-			{							
-				// Create new TreeItem.
-				var treeItem = document.createElement ('treeitem');				
-				treeItem.setAttribute ("id", attributes.data.id +"-treeitem");
-											
-				// If isChildOfId is set, append TreeItem to correct TreeChildren.
-				if (attributes.isChildOfId)
-				{														
-					if (!_elements[attributes.isChildOfId] +"-treeChildren")
-					{						
-						var treeChildren = document.createElement ("treechildren");
-						treeChildren.setAttribute ("id", attributes.isChildOfId +"-treechildren");	
-						
-						document.getElementById (attributes.isChildOfId +"-treeitem").appendChild (treeChildren);
-						document.getElementById (attributes.isChildOfId +"-treeitem").setAttribute ("container", true);						
-					}
-					
-					document.getElementById (attributes.isChildOfId +"-treechildren").appendChild (treeItem);
-				}
-				else
-				{
-					_elements.treeChildren.appendChild (treeItem)
-				}		
-				
-				// Get treelevel.
-				attributes.level = getLevel (treeItem);
-												
-				// Create TreeRow.
-				var treeRow = document.createElement ('treerow');
-				treeItem.appendChild (treeRow);
-																		
-				// Find TreeColumns and fill them with data.
-				var treeColumns = _elements.tree.columns;											
-				for (var idx = 0; idx < treeColumns.length; idx++)
-				{
-					var treeColumn = treeColumns.getColumnAt (idx);					
-					
-					if (attributes.data[treeColumn.id] != null)
-					{
-						var treeCell = document.createElement ('treecell');
-						treeCell.setAttribute ('label', attributes.data[treeColumn.id]);
-						treeRow.appendChild (treeCell);
-					}
-				}
-				
-				var checkforrow =	function (id)
-									{
-									    for (var idx = 0; idx < _rows.length; idx++) 
-									    {
-        									if (_rows[idx].id == id) 
-        									{
-            									return true;
-        									}
-    									}    									
-    									return false;
-									};
-			
-				//if (_rows[attributes.id] == null)
-//				if (!checkforrow (attributes.id))
-//				{
-//			 		_rows[_rows.length] = attributes;
-//			 	}
-												
-				return attributes.id;
-			}	
-			
-			function removeRow (attributes)
-			{
-				var row = -1;
-			
-				if (!attributes)
-					attributes = new Array ();
-									
-				if (!attributes.data)
-					attributes.data = new Array ();
-												
-				if (!attributes.data.id)
-				{
-					row = _elements.tree.currentIndex;
-				}
-				else
-				{						
-					for (var idx = 0; idx < _elements.tree.view.rowCount; idx++) 
-					{
-						if (_elements.tree.view.getCellText (idx, _elements.tree.columns.getNamedColumn ('id')) == attributes.id)
-						{					
-							row = idx;				
-							break;
-						}
-					}
-  				}
-  				
-  				if (row != -1)
-  				{
-  					_elements.tree.view.getItemAtIndex (row).parentNode.removeChild (_elements.tree.view.getItemAtIndex (row));
-  				}
-			}
-			
-			function setRow (attributes)
-			{
-				var row = -1;
-			
-				if (!attributes)
-					attributes = new Array ();
-						
-				if (!attributes.data)
-					attributes.data = new Array ();
-										
-				if (!attributes.data.id)
-				{
-				
-				}
-				else
-				{
-					for (idx in _rows)
-					{
-						if (_rows[idx].data.id == attributes.data.id)
-						{
-							// Find TreeColumns and change data.
-							var treeColumns = _elements.tree.columns;											
-							for (var idx2 = 0; idx2 < treeColumns.length; idx2++)
-							{
-								var treeColumn = treeColumns.getColumnAt (idx2);
-								if (attributes.data[treeColumn.id] != null)
-								{
-									_rows[idx].data[treeColumn.id] = attributes.data[treeColumn.id];									
-								}
-							}		
-							break;										
-						}
-					}
-				}
-				
-				refresh ();
-				
-//				if (!attributes.data.id)
-//				{
-//					row = _elements.tree.currentIndex;
-//				}
-//				else
-//				{
-//					for (var idx = 0; idx < _elements.tree.view.rowCount; idx++) 
-//					{	
-//						if (_elements.tree.view.getCellText (idx, _elements.tree.columns.getNamedColumn ('id')) == attributes.data.id)
-//						{					
-//							row = idx;
-//							break;
-//						}
-//					}
-//				}
-					
-//				if (row != -1)
-//				{
-//					// Find TreeColumns and change data.
-//					var treeColumns = _elements.tree.columns;											
-//					for (var idx = 0; idx < treeColumns.length; idx++)
-//					{
-//						var treeColumn = treeColumns.getColumnAt (idx);											
-//						if (attributes.data[treeColumn.id] != null)
-//						{
-//							_elements.tree.view.setCellText (row, treeColumn, attributes.data[treeColumn.id]);
-//						}
-//					}												
-//				}
-			}
-			
-			function getRow (attributes)
-			{
-				var result = new Array ();
-				var row = -1;
-				
-				if (!attributes)
-					attributes = new Array ();
-					
-				if (!attributes.id)
-				{
-					row = _elements.tree.currentIndex;
-				}
-				else
-				{
-					for (var idx = 0; idx < _elements.tree.view.rowCount; idx++) 
-					{
-						if (_elements.tree.view.getCellText (idx, _elements.tree.columns.getNamedColumn ('id')) == attributes.id)
-						{					
-							row = idx;
-							break;
-						}
-					}	
-				}
-									
-				if (row != -1)
-				{	
-					// Find TreeColumns and fill result with data.
-					var treeColumns = _elements.tree.columns;											
-					for (idx = 0; idx < treeColumns.length; idx++)
-					{
-						var treeColumn = treeColumns.getColumnAt (idx);																	
-						result[treeColumn.id] = _elements.tree.view.getCellText (row, treeColumn);													
-					}				
-				}
-				
-				return result;
-			}
-			
-			function clear ()
-			{				
-				while (_elements.treeChildren.firstChild) 
-				{
- 					_elements.treeChildren.removeChild (_elements.treeChildren.firstChild);
-				}
-			}
-		}	
-	}
-}
-
-var lastSignonSortColumn = "name";
-var lastSignonSortAscending = true;
-var signonsTree = document.getElementById ("customers");
-
-function getColumnByName(column) {
-  switch (column) {
-    case "name":
-      return document.getElementById("name");    
-  }
-}
-
-function GetTreeSelections(tree) {
-  var selections = [];
-  var select = tree.view.selection;
-  if (select) {
-    var count = select.getRangeCount();
-    var min = new Object();
-    var max = new Object();
-    for (var i=0; i<count; i++) {
-      select.getRangeAt(i, min, max);
-      for (var k=min.value; k<=max.value; k++) {
-        if (k != -1) {
-          selections[selections.length] = k;
-        }
-      }
-    }
-  }
-  return selections;
-}
-
-//function SortTree(tree, view, table, column, lastSortColumn, lastSortAscending, updateSelection) {
-function SortTree(tree, column, sortdirection) {
-
-  // remember which item was selected so we can restore it after the sort
-//  var selections = GetTreeSelections(tree);
-//  var selectedNumber = selections.length ? table[selections[0]].number : -1;
-
-  // determine if sort is to be ascending or descending
-//  var ascending = (column == lastSortColumn) ? !lastSortAscending : true;
-	var ascending = true;
-
-  // do the sort
-  var compareFunc;
-  if (ascending) {
-    compareFunc = function compare(first, second) {
-      return CompareLowerCase(first[column], second[column]);
-    }
-  } else {
-    compareFunc = function compare(first, second) {
-      return CompareLowerCase(second[column], first[column]);
-    }
-  }
-//  table.sort (compareFunc);
-
-  // restore the selection
-//  var selectedRow = -1;
-//  if (selectedNumber>=0 && updateSelection) {
-//    for (var s=0; s<table.length; s++) {
-//      if (table[s].number == selectedNumber) {
-//        // update selection
-//        // note: we need to deselect before reselecting in order to trigger ...Selected()
-//        tree.view.selection.select(-1);
-//        tree.view.selection.select(s);
- //       selectedRow = s;
-//        break;
-//      }
-//    }
-//  }
-
-  // display the results
-  //tree.treeBoxObject.invalidate();
-//  if (selectedRow >= 0) {
-//    tree.treeBoxObject.ensureRowIsVisible(selectedRow)
-//  }
-
-  return ascending;
-}
-
-/**
- * Case insensitive string comparator.
- */
-function CompareLowerCase(first, second) {
-  var firstLower, secondLower;
-
-  // Are we sorting nsILoginInfo entries or just strings?
-  if (first.hostname) {
-    firstLower  = first.hostname.toLowerCase();
-    secondLower = second.hostname.toLowerCase();
-  } else {
-    firstLower  = first.toLowerCase();
-    secondLower = second.toLowerCase();
-  }
-
-  if (firstLower < secondLower) {
-    return -1;
-  }
-
-  if (firstLower > secondLower) {
-    return 1;
-  }
-
-  return 0;
-}
-
-function SignonColumnSort(column) {
-  // clear out the sortDirection attribute on the old column
-  var lastSortedCol = getColumnByName(lastSignonSortColumn);
-  lastSortedCol.removeAttribute("sortDirection");
-
-
-
-
-SortTree (document.getElementById ("customers"), column, "ascending");
-
-  // sort
-//  lastSignonSortAscending =
-//    SortTree(signonsTree, signonsTreeView,
-//                 signonsTreeView._filterSet.length ? signonsTreeView._filterSet : signons,
- //                column, lastSignonSortColumn, lastSignonSortAscending);
- // lastSignonSortColumn = column;
-
-  // set the sortDirection attribute to get the styling going
-  // first we need to get the right element
-  
-  var sortedCol = getColumnByName(column);
-  sortedCol.setAttribute("sortDirection", "ascending");
-}
-
-sorttest = function (column)
-{
-
-
-}
-
 var main = 
 {
 	init : function ()
@@ -673,9 +8,7 @@ var main =
 		
 		main.customers.init ();
 		main.locations.init ();
-		
-		
-						
+								
 		app.events.onCustomerCreate.addHandler (main.eventHandlers.onCustomerCreate);
 		app.events.onCustomerSave.addHandler (main.eventHandlers.onCustomerSave);
 		app.events.onCustomerDestroy.addHandler (main.eventHandlers.onCustomerDestroy);
@@ -1036,11 +369,67 @@ var main =
 	
 	customers :
 	{
+		customersTreeHelper : null,
+	
 		init : function ()
 		{
-			main.controls.customers.refresh ();		
+			main.customers.customersTreeHelper = new sXUL.helpers.tree ({element: document.getElementById ("customers"), sort: "name", sortDirection: "descending", onDoubleClick: main.customers.edit});
+		
+			main.customers.set ();			
 		},
+		
+		set : function ()
+		{
+				var onDone = 	function (customers)
+								{
+									for (idx in customers)
+									{	
+										main.customers.customersTreeHelper.addRow ({data: customers[idx]});
+									}
 								
+								// Enable controls
+								document.getElementById ("customers").disabled = false;														
+								main.customers.onChange ();
+							};
+
+				// Disable controls
+				document.getElementById ("customers").disabled = true;					
+				document.getElementById ("customerCreate").disabled = true;			
+				document.getElementById ("customerEdit").disabled = true;
+				document.getElementById ("customerDestroy").disabled = true;
+				
+				document.getElementById ("customerSearch").focus ();
+						
+				allectusLib.customer.list ({async: true, onDone: onDone});
+		},										
+		
+		onChange : function ()
+		{										
+				if (main.customers.customersTreeHelper.getCurrentIndex () != -1)
+				{					
+					document.getElementById ("customerCreate").disabled = false;
+					document.getElementById ("customerEdit").disabled = false;
+					document.getElementById ("customerDestroy").disabled = false;
+				}
+				else
+				{					
+					document.getElementById ("customerCreate").disabled = false;
+					document.getElementById ("customerEdit").disabled = true;
+					document.getElementById ("customerDestroy").disabled = true;
+				}
+		},
+		
+		sort : function (attributes)
+		{
+			main.customers.customersTreeHelper.sort (attributes);
+		},
+		
+		filter : function ()
+		{
+			var value = document.getElementById ("customerSearch").value;
+			main.customers.customersTreeHelper.filter ({column: "name", value: value, direction: "in"});
+		},
+				
 		create : function ()
 		{		
 			try
@@ -1059,7 +448,7 @@ var main =
 		
 		edit : function ()
 		{		
-			var current = main.controls.customers.getRow ();								
+			var current = main.customers.customersTreeHelper.getRow ();
 							
 			window.openDialog ("chrome://allectus/content/customeredit/customeredit.xul", "customeredit:"+ current.id, "chrome", {customerId: current.id});
 		},
@@ -1073,7 +462,7 @@ var main =
 			{
 				try
 				{
-					allectusLib.customer.destroy (main.controls.customers.getRow ().id);					
+					allectusLib.customer.destroy (main.customers.customersTreeHelper.getRow ().id);										
 				}
 				catch (error)
 				{
